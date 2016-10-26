@@ -1,6 +1,7 @@
 package net.therap.mealplanner.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,10 @@ public class User {
     String email;
     @ManyToMany(mappedBy = "userList")
     List<Meal> mealList;
+
+    public User(){
+        mealList = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -41,6 +46,14 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getEmail() {

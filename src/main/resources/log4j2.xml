@@ -31,7 +31,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="org.apache.logging.log4j.SysLogger" level="debug" additivity="false">
+        <Logger name="org.apache.logging.log4j.test1" level="info" additivity="false">
             <Filter type="ThreadContextMapFilter">
                 <KeyValuePair key="test" value="123"/>
             </Filter>

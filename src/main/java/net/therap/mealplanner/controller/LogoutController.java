@@ -16,10 +16,14 @@ import java.io.IOException;
 public class LogoutController extends HttpServlet {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String loginUri = req.getContextPath()+"/home";
-        req.getSession().invalidate();
-        LOG.debug("LogoutController:: LoginURI: "+loginUri);
-        resp.sendRedirect(loginUri);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            String loginUri = req.getContextPath() + "/home";
+            req.getSession().invalidate();
+            LOG.debug("LogoutController:: LoginURI: " + loginUri);
+            resp.sendRedirect(loginUri);
+        } catch (Exception e) {
+            LOG.error("LogoutController :: doGet: ",e);
+        }
     }
 }

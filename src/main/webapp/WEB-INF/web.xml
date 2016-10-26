@@ -23,6 +23,11 @@
         <servlet-name>logout.do</servlet-name>
         <servlet-class>net.therap.mealplanner.controller.LogoutController</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>signup.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.SignUpController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>helloServlet.do</servlet-name>
@@ -39,6 +44,10 @@
     <servlet-mapping>
         <servlet-name>logout.do</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>signup.do</servlet-name>
+        <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
     <filter>

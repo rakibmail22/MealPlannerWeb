@@ -66,4 +66,9 @@ public class UserDetailsService {
             return null;
         }
     }
+
+    public User addNewUser(User user) {
+        UserDaoImpl userDao = new UserDaoImpl();
+        return userDao.insertNewUser(user);
+    }
 }
