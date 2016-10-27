@@ -51,6 +51,22 @@ public class UserDetailsService {
         }
     }
 
+    public Map<String, Map<String,Meal>> getWeeklyMealMap(User user) {
+        UserDetailsService userDetailsService = new UserDetailsService();
+        MealPlanService mealPlanService = new MealPlanService();
+        List<Meal> userMealList = userDetailsService.getMealListByUser(user);
+        Map<String, Map<String,Meal>> dayMealMap = new HashMap<String, Map<String,Meal>>();
+        for (Meal userMeal : userMealList) {
+            Map<String,Meal> mealMap = dayMealMap.get(userMeal.getDay());
+            if (mealMap == null) {
+                mealMap = new HashMap<String,Meal>();
+            }
+            mealMap.put(userMeal.getType(),userMeal);
+            dayMealMap.put(userMeal.getDay(), mealMap);
+        }
+        return dayMealMap;
+    }
+
     public List<Meal> getMealListByUser(User user) {
         UserDaoImpl userDao = new UserDaoImpl();
         List<Meal> userMealList = userDao.getMealListByUser(user);

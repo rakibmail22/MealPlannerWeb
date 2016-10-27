@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>home.do</servlet-name>
-        <jsp-file>/jsp/home.jsp</jsp-file>
+        <servlet-class>net.therap.mealplanner.controller.HomeController</servlet-class>
     </servlet>
 
     <servlet>
