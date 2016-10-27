@@ -11,10 +11,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by rakib on 10/24/16.
+ * @author bashir
+ * @since 10/24/16
  */
 public class AuthenticationFIlter implements Filter {
     final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -27,12 +29,12 @@ public class AuthenticationFIlter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
         String loginUri = req.getContextPath() + "/login";
-        String signUpUri = req.getContextPath()+"/signup";
+        String signUpUri = req.getContextPath() + "/signup";
         boolean loggedIn = (session != null && session.getAttribute("user") != null);
         boolean loginRequest = req.getRequestURI().equals(loginUri);
         boolean signUpRequest = req.getRequestURI().equals(signUpUri);
 
-        if (loggedIn || loginRequest || signUpRequest || excludeFilter(req.getRequestURI())) {
+        if (loggedIn || loginRequest || signUpRequest || excludeFilter(req.getServletPath())) {
             LOG.debug("AuthenticationFilter:: forward");
             chain.doFilter(req, resp);
         } else {
@@ -47,6 +49,7 @@ public class AuthenticationFIlter implements Filter {
     }
 
     private boolean excludeFilter(String path) {
+        LOG.debug("Authentication Filter::Excluding Servlet Path " + path);
         if (path.startsWith("/jsp/style/") || path.startsWith("/jsp/script/")) {
             return true;
         } else {

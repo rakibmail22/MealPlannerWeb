@@ -18,12 +18,12 @@
         <servlet-name>home.do</servlet-name>
         <jsp-file>/jsp/home.jsp</jsp-file>
     </servlet>
-    
+
     <servlet>
         <servlet-name>logout.do</servlet-name>
         <servlet-class>net.therap.mealplanner.controller.LogoutController</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>signup.do</servlet-name>
         <servlet-class>net.therap.mealplanner.controller.SignUpController</servlet-class>

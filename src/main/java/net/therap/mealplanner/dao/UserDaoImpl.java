@@ -83,10 +83,10 @@ public class UserDaoImpl {
     public User insertNewUser(User user) {
         Session session = null;
         try {
-            LOG.debug("adding new user "+user);
+            LOG.debug("adding new user " + user);
             session = HibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
-            int userId= (int) session.save(user);
+            int userId = (int) session.save(user);
             user.setId(userId);
             session.getTransaction().commit();
             session.close();

@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class MealDaoImpl {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
     public List<Dish> getDishList() {
         Session session = null;
         try {
@@ -28,7 +29,7 @@ public class MealDaoImpl {
             session.close();
             return dishList;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getDishList(): ",e);
+            LOG.error("MealDaoImpl:: getDishList(): ", e);
             return null;
         }
     }
@@ -50,7 +51,7 @@ public class MealDaoImpl {
             session.close();
             return mealListFiltered;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ",e);
+            LOG.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ", e);
             return null;
         }
     }
@@ -75,10 +76,10 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (ConstraintViolationException e) {
-            LOG.error("MealDaoImpl:: updateMealForUser(): ",e);
+            LOG.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: updateMealForUser(): ",e);
+            LOG.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         }
     }
@@ -99,7 +100,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: insertMealForUser(): ",e);
+            LOG.error("MealDaoImpl:: insertMealForUser(): ", e);
             return -1;
         }
     }
@@ -114,10 +115,10 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (ConstraintViolationException e) {
-            LOG.error("MealDaoImpl:: insertNewDish(): ",e);
+            LOG.error("MealDaoImpl:: insertNewDish(): ", e);
             return -1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: insertNewDish(): ",e);
+            LOG.error("MealDaoImpl:: insertNewDish(): ", e);
             return -1;
         }
     }
@@ -136,7 +137,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: deleteMealForUser(): ",e);
+            LOG.error("MealDaoImpl:: deleteMealForUser(): ", e);
             return -1;
         }
     }

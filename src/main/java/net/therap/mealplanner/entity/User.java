@@ -20,7 +20,7 @@ public class User {
     @ManyToMany(mappedBy = "userList")
     List<Meal> mealList;
 
-    public User(){
+    public User() {
         mealList = new ArrayList<>();
     }
 

@@ -1,13 +1,11 @@
 package net.therap.mealplanner.controller;
 
-import net.therap.mealplanner.dbconfig.HibernateManager;
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.UserDetailsService;
 import net.therap.mealplanner.utils.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.simple.SimpleLogger;
-import org.hibernate.HibernateException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,17 +21,18 @@ import java.util.Map;
  */
 public class LoginController extends HttpServlet {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             if (user != null) {
                 resp.sendRedirect(req.getContextPath() + "/home");
             } else {
-                req.getRequestDispatcher(req.getContextPath() + "/jsp/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
             }
         } catch (Exception e) {
-            LOG.error("LoginController :: doGet: ",e);
+            LOG.error("LoginController :: doGet: ", e);
         }
     }
 
@@ -63,17 +62,19 @@ public class LoginController extends HttpServlet {
                 user = userDetailsService.validateUser(username, password);
                 if (user != null) {
                     req.getSession().setAttribute("user", user);
+                    LOG.debug("Logging in...........");
                     resp.sendRedirect(req.getContextPath() + "/home");
                     return;
                 } else {
+                    LOG.debug("Logging failed...........");
                     messages.put("login", "Unknown login. Try again.");
                 }
 
             }
             req.setAttribute("messages", messages);
-            req.getRequestDispatcher(req.getContextPath() + "/jsp/login.jsp").forward(req, resp);
-        }catch (Exception e) {
-            LOG.error("LoginController :: doPost: ",e);
+            req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        } catch (Exception e) {
+            LOG.error("LoginController :: doPost: ", e);
         }
     }
 }

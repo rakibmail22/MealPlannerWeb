@@ -13,15 +13,15 @@ import java.io.IOException;
 public class HelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/index.jsp").forward(req,resp);
+        req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String s = "";
-        s+=req.getParameter("lg_username");
-        s+=" ";
-        s+=req.getParameter("lg_password");
+        s += req.getParameter("lg_username");
+        s += " ";
+        s += req.getParameter("lg_password");
         resp.getOutputStream().write(s.getBytes());
     }
 }

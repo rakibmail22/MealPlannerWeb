@@ -1,4 +1,4 @@
-<%@ page import="net.therap.mealplanner.entity.User" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: bashir
   Date: 10/24/16
@@ -12,7 +12,10 @@
 </head>
 <body>
 <h1>This is Home.</h1>
-<h2>Welcome <%=request.getSession().getAttribute("user")%></h2>
-<p><a href="/logout">Logout</a></p>
+
+<h2>Welcome <%=request.getSession().getAttribute("user")%>
+</h2>
+
+<p><a href="logout">Logout</a></p>
 </body>
 </html>

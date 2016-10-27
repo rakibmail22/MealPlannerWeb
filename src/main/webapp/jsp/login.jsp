@@ -2,9 +2,9 @@
 <head>
     <title>Login</title>
     <!-- All the files that are required -->
-    <link rel="stylesheet" href="//localhost:8080/jsp/style/font-awesome.min.css">
-    <link rel='//localhost:8080/jsp/style/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    <script src="http://localhost:8080/jsp/script/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="jsp/style/font-awesome.min.css">
+    <link rel='jsp/style/font-awesome.min.css' rel='stylesheet' type='text/css'>
+    <script src="jsp/script/jquery.validate.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div class="logo">Login</div>
     <!-- Main Form -->
     <div class="login-form-1">
-        <form id="login-form" class="text-left" action="/login" method="post">
+        <form id="login-form" class="text-left" action="login" method="post">
             <div class="login-form-main-message"></div>
             <div class="main-login-form">
                 <div class="login-group">
@@ -47,7 +47,7 @@
     <div class="logo">Sign Up</div>
     <!-- Main Form -->
     <div class="login-form-1">
-        <form id="signup-form" class="text-left" action="/signup" method="post">
+        <form id="signup-form" class="text-left" action="signup" method="post">
             <div class="login-form-main-message"></div>
             <div class="main-login-form">
                 <div class="login-group">
@@ -89,38 +89,3 @@
 </div>
 </body>
 </html>
-
-
-
-<%--
-<div class="signup-form-1">
-    <form id="signup-form" class="text-left" action="/hello" method="post">
-        <div class="signup-main-form">
-            <div class="signup-group">
-                <div class="signup-form-group">
-                    <label for="lg_email" class="sr-only">Email</label>
-                    <input type="text" class="form-control" id="lg_email" name="lg_email"
-                           placeholder="email">
-                </div>
-                <div class="signup-form-group">
-                    <label for="lg_name" class="sr-only">Name</label>
-                    <input type="text" class="form-control" id="lg_name" name="lg_name"
-                           placeholder="name">
-                </div>
-                <div class="signup-form-group">
-                    <label for="lg_signup_pass" class="sr-only">Password</label>
-                    <input type="password" class="form-control" id="lg_signup_pass" name="lg_signup_pass"
-                           placeholder="password">
-                </div>
-                <div class="signup-form-group">
-                    <label for="lg_signup_pass2" class="sr-only">Password</label>
-                    <input type="password" class="form-control" id="lg_signup_pass2" name="lg_signup_pass2"
-                           placeholder="password2">
-                </div>
-            </div>
-            <button type="submit" class="signup-button">Sign Up</button>
-        </div>
-    </form>
-
-</div>
---%>
