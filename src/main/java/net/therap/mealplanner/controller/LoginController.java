@@ -27,7 +27,11 @@ public class LoginController extends HttpServlet {
         try {
             User user = (User) req.getSession().getAttribute("user");
             if (user != null) {
-                resp.sendRedirect(req.getContextPath() + "/home");
+                if (user.getRole().equals("admin")) {
+                    resp.sendRedirect(req.getContextPath() + "/admin/home");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/home");
+                }
             } else {
                 req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
             }
@@ -42,8 +46,13 @@ public class LoginController extends HttpServlet {
             User user = (User) req.getSession().getAttribute("user");
             LOG.debug("TEST DEBUG" + user);
             if (user != null) {
-                resp.sendRedirect(req.getContextPath() + "/home");
-                return;
+                if (user != null) {
+                    if (user.getRole().equals("admin")) {
+                        resp.sendRedirect(req.getContextPath() + "/admin/home");
+                    } else {
+                        resp.sendRedirect(req.getContextPath() + "/home");
+                    }
+                }
             }
 
             UserDetailsService userDetailsService = new UserDetailsService();
@@ -63,7 +72,11 @@ public class LoginController extends HttpServlet {
                 if (user != null) {
                     req.getSession().setAttribute("user", user);
                     LOG.debug("Logging in...........");
-                    resp.sendRedirect(req.getContextPath() + "/home");
+                    if (user.getRole().equals("admin")) {
+                        resp.sendRedirect(req.getContextPath() + "/admin/home");
+                    } else {
+                        resp.sendRedirect(req.getContextPath() + "/home");
+                    }
                     return;
                 } else {
                     LOG.debug("Logging failed...........");

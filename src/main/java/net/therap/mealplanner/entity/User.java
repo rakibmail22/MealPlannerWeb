@@ -17,6 +17,7 @@ public class User {
     String name;
     String password;
     String email;
+    String role;
     @ManyToMany(mappedBy = "userList")
     List<Meal> mealList;
 
@@ -58,6 +59,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String toString() {

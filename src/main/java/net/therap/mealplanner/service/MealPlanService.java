@@ -92,4 +92,14 @@ public class MealPlanService {
         session.close();
         return dishList;
     }
+
+    public List<Meal> getAllMeal(){
+        MealDaoImpl mealDao = new MealDaoImpl();
+        return mealDao.getAllMeal();
+    }
+
+    public void createNewMeal(List<Dish> dishList){
+        MealDaoImpl mealDao = new MealDaoImpl();
+        mealDao.createNewMeal(dishList);
+    }
 }

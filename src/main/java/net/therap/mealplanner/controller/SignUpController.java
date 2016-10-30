@@ -58,6 +58,7 @@ public class SignUpController extends HttpServlet {
                 User user = new User();
                 user.setName(name);
                 user.setEmail(email);
+                user.setRole("user");
                 user.setPassword(Utils.hashMd5(password));
                 user = userDetailsService.addNewUser(user);
                 req.getSession().setAttribute("user", user);

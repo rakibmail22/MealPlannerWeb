@@ -1,0 +1,12 @@
+#theTable {
+    border-collapse: collapse;
+    border: 1px solid;
+}
+
+#theTable td {
+    border: 1px solid;
+}
+
+#theTable th {
+    border: 1px solid;
+}

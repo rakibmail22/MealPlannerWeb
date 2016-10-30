@@ -7,6 +7,7 @@ import net.therap.mealplanner.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.simple.SimpleLogger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -52,6 +53,24 @@ public class MealDaoImpl {
             return mealListFiltered;
         } catch (HibernateException e) {
             LOG.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ", e);
+            return null;
+        }
+    }
+
+    public List<Meal> getAllMeal(){
+        Session session = null;
+        try {
+            session = HibernateManager.getSessionFactory().openSession();
+            session.beginTransaction();
+            List<Meal> mealList = session.createCriteria(Meal.class).list();
+            for (Meal meal: mealList) {
+                Hibernate.initialize(meal.getMealDishes());
+            }
+            session.getTransaction().commit();
+            session.close();
+            return mealList;
+        } catch (HibernateException e) {
+            LOG.error("MealDaoImpl:: getAllMeal ");
             return null;
         }
     }
@@ -133,6 +152,25 @@ public class MealDaoImpl {
             List<Meal> userMealList = user.getMealList();
             userMealList.remove(meal);
             meal.getUserList().remove(user);
+            session.getTransaction().commit();
+            session.close();
+            return 1;
+        } catch (HibernateException e) {
+            LOG.error("MealDaoImpl:: deleteMealForUser(): ", e);
+            return -1;
+        }
+    }
+
+    public int createNewMeal(List<Dish> dishList) {
+        Session session = null;
+        try {
+            Meal meal = new Meal();
+            for (Dish dish: dishList) {
+                meal.getMealDishes().add(dish);
+            }
+            session = HibernateManager.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(meal);
             session.getTransaction().commit();
             session.close();
             return 1;
