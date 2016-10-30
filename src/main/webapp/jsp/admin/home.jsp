@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="${path}/jsp/style/common.css">
 </head>
 <body>
+
 <div>
     <div class="leftFloat">
-        <form action="createNewMeal" method="get">
+        <form>
             <table border="1">
                 <thead>
                 <tr>
@@ -33,8 +34,17 @@
                     </tr>
                 </c:forEach>
             </table>
-            <button type="submit">Create New Meal</button>
+            <input type="submit" value="Create New Breakfast" onclick="form.action='createNewBreakfast';">
+            <input type="submit" value="Create New Lunch" onclick="form.action='createNewLunch';">
         </form>
+
+        <form action="addNewDish" method="get">
+            <h4>Add New Dish</h4>
+            <input type="text" name="dishName">
+            <button type="submit">Add New Dish</button>
+        </form>
+
+        <p><a href="${path}/logout">Logout</a></p>
     </div>
     <div class="rightFLoat">
         <form action="deleteMeal" method="get">
@@ -42,20 +52,86 @@
                 <thead>
                 <tr>
                     <th>Available Meals</th>
+                    <th>Meal Type</th>
                 </tr>
                 </thead>
                 <c:forEach var="meal" items="${allMeals}" varStatus="loop">
                     <tr>
                         <td>
-                            <label><input type="checkbox" name="selectedMeals" value="${loop.index}">${meal.getMealDishesAsString()}
+                            <label><input type="checkbox" name="selectedMeals"
+                                          value="${loop.index}">${meal.getMealDishesAsString()}
                             </label>
+                        </td>
+                        <td>
+                            <c:out value="${meal.getType()}"/>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
             <button type="submit">Delete Meal</button>
         </form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <table id="theTable" border="1">
+            <thead>
+            <tr>
+                <th>Day</th>
+                <th>Break Fast</th>
+                <th>Lunch</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>SUNDAY</td>
+                <td><c:out value="${((weeklyMeal['SUN'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['SUN'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>MONDAY</td>
+                <td><c:out value="${((weeklyMeal['MON'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['MON'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>TUESDAY</td>
+                <td><c:out value="${((weeklyMeal['TUE'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['TUE'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>WEDNESDAY</td>
+                <td><c:out value="${((weeklyMeal['WED'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['WED'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>THURSDAY</td>
+                <td><c:out value="${((weeklyMeal['THU'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['THU'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>FRIDAY</td>
+                <td><c:out value="${((weeklyMeal['FRI'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['FRI'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            <tr>
+                <td>SATURDAY</td>
+                <td><c:out value="${((weeklyMeal['SAT'])['B']).getMealDishesAsString()}"/></td>
+                <td><c:out value="${((weeklyMeal['SAT'])['L']).getMealDishesAsString()}"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+
     </div>
+    <br>
+
+    <p>
 </div>
+
+
+
+
 </body>
 </html>

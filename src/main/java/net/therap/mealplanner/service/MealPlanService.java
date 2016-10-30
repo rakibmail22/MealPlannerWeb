@@ -98,8 +98,13 @@ public class MealPlanService {
         return mealDao.getAllMeal();
     }
 
-    public void createNewMeal(List<Dish> dishList){
+    public void createNewMeal(List<Dish> dishList, String type){
         MealDaoImpl mealDao = new MealDaoImpl();
-        mealDao.createNewMeal(dishList);
+        mealDao.createNewMeal(dishList, type);
+    }
+
+    public void deleteMeal(List<Meal> selectedMealList) {
+        MealDaoImpl mealDao = new MealDaoImpl();
+        mealDao.deleteMeal(selectedMealList);
     }
 }

@@ -161,12 +161,13 @@ public class MealDaoImpl {
         }
     }
 
-    public int createNewMeal(List<Dish> dishList) {
+    public int createNewMeal(List<Dish> dishList, String type) {
         Session session = null;
         try {
             Meal meal = new Meal();
             for (Dish dish: dishList) {
                 meal.getMealDishes().add(dish);
+                meal.setType(type);
             }
             session = HibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
@@ -176,6 +177,24 @@ public class MealDaoImpl {
             return 1;
         } catch (HibernateException e) {
             LOG.error("MealDaoImpl:: deleteMealForUser(): ", e);
+            return -1;
+        }
+    }
+
+    public int deleteMeal(List<Meal> selectedMealList) {
+        Session session = null;
+        try {
+            session = HibernateManager.getSessionFactory().openSession();
+            for (Meal meal : selectedMealList) {
+                session.beginTransaction();
+                meal = (Meal) session.merge(meal);
+                session.delete(meal);
+            }
+            session.getTransaction().commit();
+            session.close();
+            return 1;
+        } catch (HibernateException e) {
+            LOG.error("MealDaoImpl:: deleteMeal(): ", e);
             return -1;
         }
     }

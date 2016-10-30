@@ -35,9 +35,25 @@
     </servlet>
 
     <servlet>
-        <servlet-name>createNewMeal.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.MealCreateController</servlet-class>
+        <servlet-name>createNewBreakfast.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.BreakfastCreateController</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>createNewLunch.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.LunchCreateController</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>deleteMeal.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.MealDeleteController</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>addNewDish.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.DishAddController</servlet-class>
+    </servlet>
+
 
 
     <servlet-mapping>
@@ -65,9 +81,23 @@
         <url-pattern>/admin/home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>createNewMeal.do</servlet-name>
-        <url-pattern>/admin/createNewMeal</url-pattern>
+        <servlet-name>createNewBreakfast.do</servlet-name>
+        <url-pattern>/admin/createNewBreakfast</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createNewLunch.do</servlet-name>
+        <url-pattern>/admin/createNewLunch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteMeal.do</servlet-name>
+        <url-pattern>/admin/deleteMeal</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>addNewDish.do</servlet-name>
+        <url-pattern>/admin/addNewDish</url-pattern>
+    </servlet-mapping>
+
 
 
     <filter>

@@ -1,6 +1,7 @@
 package net.therap.mealplanner.entity;
 
 import net.therap.mealplanner.service.MealPlanService;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
