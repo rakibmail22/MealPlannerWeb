@@ -60,6 +60,25 @@ public class UserDaoImpl {
         }
     }
 
+    public List<Meal> getMealListAdmin() {
+        Session session = null;
+        try {
+            session = HibernateManager.getSessionFactory().openSession();
+            session.beginTransaction();
+            User admin = (User) session.createCriteria(User.class).add(Restrictions.eq("role", "admin")).uniqueResult();
+            List<Meal> weeklyMealPlan = admin.getMealList();
+            for (Meal meal: weeklyMealPlan) {
+                Hibernate.initialize(meal.getMealDishes());
+            }
+            session.getTransaction().commit();
+            session.close();
+            return weeklyMealPlan;
+        } catch (HibernateException e) {
+            LOG.error("MealDaoImpl:: getMealListAdmin(): ", e);
+            return null;
+        }
+    }
+
     public User getUserByEmail(String email) {
         Session session = null;
         try {

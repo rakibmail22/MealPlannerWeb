@@ -67,6 +67,8 @@ public class UserDetailsService {
         return dayMealMap;
     }
 
+
+
     public List<Meal> getMealListByUser(User user) {
         UserDaoImpl userDao = new UserDaoImpl();
         List<Meal> userMealList = userDao.getMealListByUser(user);

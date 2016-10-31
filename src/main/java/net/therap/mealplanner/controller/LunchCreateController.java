@@ -1,6 +1,8 @@
 package net.therap.mealplanner.controller;
 
 import net.therap.mealplanner.entity.Dish;
+import net.therap.mealplanner.entity.Meal;
+import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.MealPlanService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +24,7 @@ public class LunchCreateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            User user = (User) req.getSession().getAttribute("user");
             MealPlanService mealPlanService = new MealPlanService();
             String[] checkBoxValues = req.getParameterValues("selectedDishes");
             List<Dish> selectedDishList = new ArrayList<>();
@@ -29,7 +32,12 @@ public class LunchCreateController extends HttpServlet {
             for (String index: checkBoxValues) {
                 selectedDishList.add(allDishList.get(Integer.parseInt(index)));
             }
-            mealPlanService.createNewMeal(selectedDishList, "L");
+            Meal meal = new Meal();
+            meal.getMealDishes().addAll(selectedDishList);
+            meal.setDay(req.getParameter("daySelect"));
+            meal.setType("L");
+            Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "L");
+            mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
             req.getRequestDispatcher("/admin/home").forward(req,resp);
             LOG.debug("Checking checkbox params ::: "+ Arrays.deepToString(selectedDishList.toArray()));
         } catch (Exception e) {

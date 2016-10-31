@@ -1,6 +1,7 @@
 package net.therap.mealplanner.service;
 
 import net.therap.mealplanner.dao.MealDaoImpl;
+import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.dbconfig.HibernateManager;
 import net.therap.mealplanner.entity.Dish;
 import net.therap.mealplanner.entity.Meal;
@@ -8,7 +9,9 @@ import net.therap.mealplanner.entity.User;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author bashir
@@ -107,4 +110,26 @@ public class MealPlanService {
         MealDaoImpl mealDao = new MealDaoImpl();
         mealDao.deleteMeal(selectedMealList);
     }
+
+    public List<Meal> getAdminMealList(){
+        UserDaoImpl userDao= new UserDaoImpl();
+        return userDao.getMealListAdmin();
+    }
+
+    public Map<String, Map<String,Meal>> getWeeklyMealMapForUser() {
+        MealPlanService mealPlanService = new MealPlanService();
+        List<Meal> userMealList = mealPlanService.getAdminMealList();
+        Map<String, Map<String,Meal>> dayMealMap = new HashMap<String, Map<String,Meal>>();
+        for (Meal userMeal : userMealList) {
+            Map<String,Meal> mealMap = dayMealMap.get(userMeal.getDay());
+            if (mealMap == null) {
+                mealMap = new HashMap<String,Meal>();
+            }
+            mealMap.put(userMeal.getType(),userMeal);
+            dayMealMap.put(userMeal.getDay(), mealMap);
+        }
+        return dayMealMap;
+    }
+
+
 }

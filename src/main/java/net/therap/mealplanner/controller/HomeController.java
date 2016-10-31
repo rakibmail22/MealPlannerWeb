@@ -2,6 +2,7 @@ package net.therap.mealplanner.controller;
 
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.service.UserDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,8 +26,8 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            UserDetailsService userDetailsService = new UserDetailsService();
-            Map<String, Map<String, Meal>> weeklyMealMap = userDetailsService.getWeeklyMealMap((User) req.getSession().getAttribute("user"));
+            MealPlanService mealPlanService = new MealPlanService();
+            Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
             req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
             req.getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
         } catch (ServletException e) {

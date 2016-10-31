@@ -34,8 +34,17 @@
                     </tr>
                 </c:forEach>
             </table>
-            <input type="submit" value="Create New Breakfast" onclick="form.action='createNewBreakfast';">
-            <input type="submit" value="Create New Lunch" onclick="form.action='createNewLunch';">
+            <select name="daySelect">
+                <option value="SUN">SUNDAY</option>
+                <option value="MON">MONDAY</option>
+                <option value="TUE">TUESDAY</option>
+                <option value="WED">WEDNESDAY</option>
+                <option value="THU">THURSDAY</option>
+                <option value="FRI">FRIDAY</option>
+                <option value="SAT">SATURDAY</option>
+            </select>
+            <input type="submit" value="Update Breakfast" onclick="form.action='createNewBreakfast';">
+            <input type="submit" value="Update Lunch" onclick="form.action='createNewLunch';">
         </form>
 
         <form action="addNewDish" method="get">
@@ -47,35 +56,6 @@
         <p><a href="${path}/logout">Logout</a></p>
     </div>
     <div class="rightFLoat">
-        <form action="deleteMeal" method="get">
-            <table border="1">
-                <thead>
-                <tr>
-                    <th>Available Meals</th>
-                    <th>Meal Type</th>
-                </tr>
-                </thead>
-                <c:forEach var="meal" items="${allMeals}" varStatus="loop">
-                    <tr>
-                        <td>
-                            <label><input type="checkbox" name="selectedMeals"
-                                          value="${loop.index}">${meal.getMealDishesAsString()}
-                            </label>
-                        </td>
-                        <td>
-                            <c:out value="${meal.getType()}"/>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
-            <button type="submit">Delete Meal</button>
-        </form>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <table id="theTable" border="1">
             <thead>
             <tr>

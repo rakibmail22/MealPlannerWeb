@@ -54,6 +54,11 @@
         <servlet-class>net.therap.mealplanner.controller.DishAddController</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>updateWeeklyPlan.do</servlet-name>
+        <servlet-class>net.therap.mealplanner.controller.WeeklyMealUpdateController</servlet-class>
+    </servlet>
+
 
 
     <servlet-mapping>
@@ -97,6 +102,12 @@
         <servlet-name>addNewDish.do</servlet-name>
         <url-pattern>/admin/addNewDish</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>updateWeeklyPlan.do</servlet-name>
+        <url-pattern>/admin/updateWeeklyPlan</url-pattern>
+    </servlet-mapping>
+
 
 
 
