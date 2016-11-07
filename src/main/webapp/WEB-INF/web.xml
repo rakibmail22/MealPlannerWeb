@@ -28,51 +28,7 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
-    
-    
 
-
-
-    <servlet>
-        <servlet-name>home.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.HomeController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>logout.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.LogoutController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>signup.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.SignUpController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>adminHome.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.AdminHomeController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>createNewBreakfast.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.BreakfastCreateController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>createNewLunch.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.LunchCreateController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>deleteMeal.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.MealDeleteController</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>addNewDish.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.DishAddController</servlet-class>
-    </servlet>
 
     <servlet>
         <servlet-name>updateWeeklyPlan.do</servlet-name>
@@ -80,40 +36,6 @@
     </servlet>
 
 
-
-    <servlet-mapping>
-        <servlet-name>home.do</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>logout.do</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>signup.do</servlet-name>
-        <url-pattern>/signup</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>adminHome.do</servlet-name>
-        <url-pattern>/admin/home</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>createNewBreakfast.do</servlet-name>
-        <url-pattern>/admin/createNewBreakfast</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>createNewLunch.do</servlet-name>
-        <url-pattern>/admin/createNewLunch</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteMeal.do</servlet-name>
-        <url-pattern>/admin/deleteMeal</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>addNewDish.do</servlet-name>
-        <url-pattern>/admin/addNewDish</url-pattern>
-    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>updateWeeklyPlan.do</servlet-name>

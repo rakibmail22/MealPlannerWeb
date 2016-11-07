@@ -8,6 +8,7 @@ import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author bashir
  * @since 10/17/16
  */
+@Service
 public class MealPlanService {
     public List<Dish> getDishList() {
         MealDaoImpl mealDao = new MealDaoImpl();
