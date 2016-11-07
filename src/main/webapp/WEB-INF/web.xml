@@ -30,20 +30,12 @@
     </listener>
 
 
-    <servlet>
-        <servlet-name>updateWeeklyPlan.do</servlet-name>
-        <servlet-class>net.therap.mealplanner.controller.WeeklyMealUpdateController</servlet-class>
-    </servlet>
 
 
 
-    <servlet-mapping>
-        <servlet-name>updateWeeklyPlan.do</servlet-name>
-        <url-pattern>/admin/updateWeeklyPlan</url-pattern>
-    </servlet-mapping>
 
 
- <!--   <filter>
+    <filter>
         <filter-name>authenticate</filter-name>
         <filter-class>net.therap.mealplanner.filter.AuthenticationFIlter</filter-class>
     </filter>
@@ -61,6 +53,5 @@
         <filter-name>authAdmin</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
--->
 
 </web-app>
