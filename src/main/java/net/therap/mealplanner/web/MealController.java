@@ -79,7 +79,6 @@ public class MealController {
     @RequestMapping(value = "/admin/addNewDish", method = RequestMethod.GET)
     public ModelAndView addDish(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            MealPlanService mealPlanService = new MealPlanService();
             String dishName = req.getParameter("dishName");
             Dish dish = new Dish();
             dish.setName(dishName);
@@ -95,7 +94,6 @@ public class MealController {
     @RequestMapping(value = "/admin/deleteMeal", method = RequestMethod.GET)
     public ModelAndView deleteMeal(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            MealPlanService mealPlanService = new MealPlanService();
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
             List<Meal> selectedMealList = new ArrayList<>();
             List<Meal> allMealList= (List<Meal>) req.getSession().getAttribute("allMeals");

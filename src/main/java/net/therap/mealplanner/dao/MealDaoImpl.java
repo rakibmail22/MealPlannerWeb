@@ -11,6 +11,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author bashir
  * @since 10/17/16
  */
+@Repository
 public class MealDaoImpl {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
@@ -196,6 +198,22 @@ public class MealDaoImpl {
         } catch (HibernateException e) {
             LOG.error("MealDaoImpl:: deleteMeal(): ", e);
             return -1;
+        }
+    }
+
+    public List<Dish> getDishListByMeal(Meal meal) {
+        Session session = null;
+        try {
+            session = HibernateManager.getSessionFactory().openSession();
+            meal = (Meal) session.merge(meal);
+            List<Dish> dishList = meal.getMealDishes();
+            Hibernate.initialize(dishList.size());
+            session.evict(meal);
+            session.close();
+            return dishList;
+        } catch (HibernateException e) {
+            LOG.error("MealDaoImpl:: getDishListByMeal(): ", e);
+            return null;
         }
     }
 }

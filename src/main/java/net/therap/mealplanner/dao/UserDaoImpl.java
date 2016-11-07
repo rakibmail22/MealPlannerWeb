@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author bashir
  * @since 10/16/16
  */
+@Repository
 public class UserDaoImpl {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 

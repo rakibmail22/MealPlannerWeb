@@ -2,6 +2,7 @@ package net.therap.mealplanner.entity;
 
 import net.therap.mealplanner.service.MealPlanService;
 import org.hibernate.annotations.Cascade;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "tblMeal")
 public class Meal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
@@ -21,7 +23,7 @@ public class Meal {
     String type;
     @Column(columnDefinition = "enum('FRI','SAT','SUN','MON','TUE','WED','THU')")
     String day;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tblMeal_Dish",
             joinColumns = @JoinColumn(name = "mealId", nullable = false),
@@ -75,9 +77,8 @@ public class Meal {
     }
 
     public String getMealDishesAsString() {
-        String dishes = "";
-        MealPlanService mealPlanService = new MealPlanService();
-        for (Dish dish : mealPlanService.getDishListByMeal(this)) {
+         String dishes = "";
+         for (Dish dish : getMealDishes()) {
             dishes += dish.getName() + ",";
         }
         return dishes.substring(0, dishes.length() - 1);
