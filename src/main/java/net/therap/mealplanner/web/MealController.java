@@ -24,13 +24,14 @@ import java.util.List;
  * @since 11/7/16
  */
 @Controller
+@RequestMapping(value = "/admin")
 public class MealController {
 
     @Autowired
     MealPlanService mealPlanService;
     final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
-    @RequestMapping(value = "/admin/createNewBreakfast", method = RequestMethod.GET)
+    @RequestMapping(value = "/createNewBreakfast", method = RequestMethod.GET)
     public ModelAndView createBreakFast(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");
@@ -54,7 +55,7 @@ public class MealController {
         }
     }
 
-    @RequestMapping(value = "/admin/createNewLunch", method = RequestMethod.GET)
+    @RequestMapping(value = "/createNewLunch", method = RequestMethod.GET)
     public ModelAndView createLunch(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");
@@ -78,7 +79,7 @@ public class MealController {
         }
     }
 
-    @RequestMapping(value = "/admin/addNewDish", method = RequestMethod.GET)
+    @RequestMapping(value = "/addNewDish", method = RequestMethod.GET)
     public ModelAndView addDish(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String dishName = req.getParameter("dishName");
@@ -93,7 +94,7 @@ public class MealController {
         }
     }
 
-    @RequestMapping(value = "/admin/deleteMeal", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteMeal", method = RequestMethod.GET)
     public ModelAndView deleteMeal(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
@@ -111,7 +112,7 @@ public class MealController {
         }
     }
 
-    @RequestMapping(value = "/admin/updateWeeklyPlan", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateWeeklyPlan", method = RequestMethod.GET)
     public ModelAndView updateWeeklyMeal(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
