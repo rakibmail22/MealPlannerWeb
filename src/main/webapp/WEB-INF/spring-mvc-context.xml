@@ -11,8 +11,6 @@
                             https://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
     <context:component-scan base-package="net.therap.mealplanner.web"/>
-    <context:component-scan base-package="net.therap.mealplanner.dao"/>
-    <context:component-scan base-package="net.therap.mealplanner.service"/>
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/jsp/"/>

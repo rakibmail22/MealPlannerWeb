@@ -28,7 +28,7 @@ public class MealController {
     final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
     @Autowired
     MealPlanService mealPlanService;
-    @RequestMapping(value = "/admin/createNewController", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/createNewBreakfast", method = RequestMethod.GET)
     public ModelAndView createBreakFast(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");

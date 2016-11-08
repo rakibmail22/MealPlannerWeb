@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,10 +23,12 @@ import java.util.List;
 public class UserDaoImpl {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
+    @Autowired
+    HibernateManager hibernateManager;
     public User getUserById(int id) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             User user = session.load(User.class, id);
             Hibernate.initialize(user);
@@ -45,7 +48,7 @@ public class UserDaoImpl {
     public List<Meal> getMealListByUser(User user) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             user = (User) session.merge(user);
             Hibernate.initialize(user.getMealList().size());
@@ -65,7 +68,7 @@ public class UserDaoImpl {
     public List<Meal> getMealListAdmin() {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             User admin = (User) session.createCriteria(User.class).add(Restrictions.eq("role", "admin")).uniqueResult();
             List<Meal> weeklyMealPlan = admin.getMealList();
@@ -84,7 +87,7 @@ public class UserDaoImpl {
     public User getUserByEmail(String email) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", email)).uniqueResult();
             Hibernate.initialize(user);
@@ -105,7 +108,7 @@ public class UserDaoImpl {
         Session session = null;
         try {
             LOG.debug("adding new user " + user);
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             int userId = (int) session.save(user);
             user.setId(userId);

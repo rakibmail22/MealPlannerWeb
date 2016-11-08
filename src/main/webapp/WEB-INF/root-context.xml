@@ -6,6 +6,8 @@
 
     <context:component-scan base-package="net.therap.mealplanner.dao" />
     <context:component-scan base-package="net.therap.mealplanner.service" />
+    <context:component-scan base-package="net.therap.mealplanner.dbconfig" />
+
 
 
 </beans>

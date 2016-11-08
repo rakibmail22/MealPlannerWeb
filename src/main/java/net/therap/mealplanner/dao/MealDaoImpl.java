@@ -11,6 +11,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,10 +25,12 @@ import java.util.List;
 public class MealDaoImpl {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
+    @Autowired
+    HibernateManager hibernateManager;
     public List<Dish> getDishList() {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             List<Dish> dishList = session.createCriteria(Dish.class).list();
             session.close();
             return dishList;
@@ -40,7 +43,7 @@ public class MealDaoImpl {
     public List<Meal> getAllMealListOfTypeAndDay(String type, String day) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             List<Meal> mealList = session.createCriteria(Meal.class).list();
             session.getTransaction().commit();
@@ -62,7 +65,7 @@ public class MealDaoImpl {
     public List<Meal> getAllMeal(){
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             List<Meal> mealList = session.createCriteria(Meal.class).list();
             for (Meal meal: mealList) {
@@ -80,7 +83,7 @@ public class MealDaoImpl {
     public int updateMealForUser(Meal existingMeal, Meal newMeal, User user) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             user = (User) session.merge(user);
             newMeal = (Meal) session.merge(newMeal);
@@ -108,7 +111,7 @@ public class MealDaoImpl {
     public int insertMealForUser(Meal newMeal, List<Dish> dishList, User user) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             user = (User) session.merge(user);
             session.save(newMeal);
@@ -129,7 +132,7 @@ public class MealDaoImpl {
     public int insertNewDish(Dish dish) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(dish);
             session.getTransaction().commit();
@@ -147,7 +150,7 @@ public class MealDaoImpl {
     public int deleteMealForUser(Meal meal, User user) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             meal = (Meal) session.merge(meal);
             user = (User) session.merge(user);
@@ -171,7 +174,7 @@ public class MealDaoImpl {
                 meal.getMealDishes().add(dish);
                 meal.setType(type);
             }
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(meal);
             session.getTransaction().commit();
@@ -186,7 +189,7 @@ public class MealDaoImpl {
     public int deleteMeal(List<Meal> selectedMealList) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             for (Meal meal : selectedMealList) {
                 session.beginTransaction();
                 meal = (Meal) session.merge(meal);
@@ -204,7 +207,7 @@ public class MealDaoImpl {
     public List<Dish> getDishListByMeal(Meal meal) {
         Session session = null;
         try {
-            session = HibernateManager.getSessionFactory().openSession();
+            session = hibernateManager.getSessionFactory().openSession();
             meal = (Meal) session.merge(meal);
             List<Dish> dishList = meal.getMealDishes();
             Hibernate.initialize(dishList.size());
