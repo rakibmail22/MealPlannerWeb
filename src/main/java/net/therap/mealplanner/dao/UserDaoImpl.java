@@ -21,10 +21,11 @@ import java.util.List;
  */
 @Repository
 public class UserDaoImpl {
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @Autowired
     HibernateManager hibernateManager;
+    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
     public User getUserById(int id) {
         Session session = null;
         try {
@@ -72,7 +73,7 @@ public class UserDaoImpl {
             session.beginTransaction();
             User admin = (User) session.createCriteria(User.class).add(Restrictions.eq("role", "admin")).uniqueResult();
             List<Meal> weeklyMealPlan = admin.getMealList();
-            for (Meal meal: weeklyMealPlan) {
+            for (Meal meal : weeklyMealPlan) {
                 Hibernate.initialize(meal.getMealDishes());
             }
             session.getTransaction().commit();

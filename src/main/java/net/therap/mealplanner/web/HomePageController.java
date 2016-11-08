@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +26,11 @@ import java.util.Map;
 @Controller
 public class HomePageController {
 
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
-
     @Autowired
     UserDetailsService userDetailsService;
     @Autowired
     MealPlanService mealPlanService;
+    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public ModelAndView adminHome(HttpServletRequest req, HttpServletResponse resp) {
@@ -41,11 +38,11 @@ public class HomePageController {
             User user = (User) req.getSession().getAttribute("user");
             List<Dish> allDishList = mealPlanService.getDishList();
             Map<String, Map<String, Meal>> weeklyMealMap = userDetailsService.getWeeklyMealMap(user);
-            req.getSession().setAttribute("allDishes",allDishList);
-            req.getSession().setAttribute("weeklyMeal",weeklyMealMap);
+            req.getSession().setAttribute("allDishes", allDishList);
+            req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
             return new ModelAndView("admin/home");
         } catch (Exception e) {
-            LOG.error("AdminHomeController ::: doGet : ",e);
+            LOG.error("AdminHomeController ::: doGet : ", e);
             return null;
         }
     }

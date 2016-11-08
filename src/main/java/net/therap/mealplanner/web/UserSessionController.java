@@ -28,17 +28,17 @@ public class UserSessionController {
 
     @Autowired
     UserDetailsService userDetailsService;
-
     @Autowired
     SignUpService signUpService;
-
+    @Autowired
+    Utils utils;
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public ModelAndView displayLogin(HttpServletRequest req, HttpServletResponse resp) {
         ModelAndView modelAndView = new ModelAndView("login");
         User user = (User) req.getSession().getAttribute("user");
-        if (user!= null) {
+        if (user != null) {
             if (user.getRole().equals("admin")) {
                 return new ModelAndView("redirect:/admin/home");
             } else {
@@ -63,7 +63,7 @@ public class UserSessionController {
             }
 
             String username = req.getParameter("lg_username");
-            String password = Utils.hashMd5(req.getParameter("lg_password")).trim();
+            String password = utils.hashMd5(req.getParameter("lg_password")).trim();
             Map<String, String> messages = new HashMap<>();
             if (username == null || username.isEmpty()) {
                 messages.put("username", "Username is required ");
@@ -77,7 +77,7 @@ public class UserSessionController {
                 user = userDetailsService.validateUser(username, password);
                 if (user != null) {
                     req.getSession().setAttribute("user", user);
-                    modelAndView.addObject("user",user);
+                    modelAndView.addObject("user", user);
                     LOG.debug("Logging in...........");
                     if (user.getRole().equals("admin")) {
                         modelAndView.setViewName("redirect:/admin/home");
@@ -135,10 +135,10 @@ public class UserSessionController {
                 user.setName(name);
                 user.setEmail(email);
                 user.setRole("user");
-                user.setPassword(Utils.hashMd5(password));
+                user.setPassword(utils.hashMd5(password));
                 user = userDetailsService.addNewUser(user);
                 req.getSession().setAttribute("user", user);
-                return new ModelAndView("forward:/login") ;
+                return new ModelAndView("forward:/login");
             }
             req.setAttribute("messages", messages);
             return new ModelAndView("forward:/login");

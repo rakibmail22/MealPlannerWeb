@@ -23,10 +23,11 @@ import java.util.List;
  */
 @Repository
 public class MealDaoImpl {
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @Autowired
     HibernateManager hibernateManager;
+    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
     public List<Dish> getDishList() {
         Session session = null;
         try {
@@ -62,13 +63,13 @@ public class MealDaoImpl {
         }
     }
 
-    public List<Meal> getAllMeal(){
+    public List<Meal> getAllMeal() {
         Session session = null;
         try {
             session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             List<Meal> mealList = session.createCriteria(Meal.class).list();
-            for (Meal meal: mealList) {
+            for (Meal meal : mealList) {
                 Hibernate.initialize(meal.getMealDishes());
             }
             session.getTransaction().commit();
@@ -170,7 +171,7 @@ public class MealDaoImpl {
         Session session = null;
         try {
             Meal meal = new Meal();
-            for (Dish dish: dishList) {
+            for (Dish dish : dishList) {
                 meal.getMealDishes().add(dish);
                 meal.setType(type);
             }
