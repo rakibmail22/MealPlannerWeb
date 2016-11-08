@@ -10,8 +10,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="jsp/style/font-awesome.min.css">
-    <link rel="stylesheet" href="jsp/style/meal-table.css">
+    <c:set var="basePath" value="${pageContext.request.contextPath}"/>
+    <link rel="stylesheet" href="${basePath}/statics/style/font-awesome.min.css">
+    <link rel="stylesheet" href="${basePath}/statics/style/meal-table.css">
     <title>Home</title>
 </head>
 <body>

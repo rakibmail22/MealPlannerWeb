@@ -8,11 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Hello JSP</title>
+    <title>MealPlanner</title>
 </head>
 <h1>JSP</h1>
 <b>
-    "HELLO WORLD"
+    "HELLO USER"
 </b>
 
 <body>

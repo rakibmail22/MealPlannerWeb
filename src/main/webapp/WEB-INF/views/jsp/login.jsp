@@ -1,10 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Login</title>
     <!-- All the files that are required -->
-    <link rel="stylesheet" href="jsp/style/font-awesome.min.css">
-    <link rel='jsp/style/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    <script src="jsp/script/jquery.validate.min.js"></script>
+    <c:set var="basePath" value="${pageContext.request.contextPath}" />
+    <link rel="stylesheet" href="${basePath}/statics/style/font-awesome.min.css">
+    <link rel='statics/style/font-awesome.min.css' rel='stylesheet' type='text/css'>
+    <script src="${basePath}/statics/script/jquery.validate.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 </head>
 <body>

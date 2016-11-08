@@ -130,7 +130,6 @@ public class MealController {
             selectedMeal.setDay(day);
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, day, selectedMeal.getType());
             mealPlanService.updateMealPlanForUser(selectedMeal, existingMeal, user);
-            //Meal existingMeal = mealPlanService.getMealForUserForDay();
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
             return new ModelAndView("redirect:/admin/home");
         } catch (Exception e) {

@@ -11,8 +11,8 @@
 <html>
 <head>
     <title>Admin Home</title>
-    <c:set var="path" value="${pageContext.request.contextPath}"/>
-    <link rel="stylesheet" href="${path}/jsp/style/common.css">
+    <c:set var="basePath" value="${pageContext.request.contextPath}"/>
+    <link rel="stylesheet" href="${basePath}/statics/style/common.css">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
             <button type="submit">Add New Dish</button>
         </form>
 
-        <p><a href="${path}/logout">Logout</a></p>
+        <p><a href="${basePath}/logout">Logout</a></p>
     </div>
     <div class="rightFLoat">
         <table id="theTable" border="1">
