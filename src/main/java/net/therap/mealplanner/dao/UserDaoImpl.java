@@ -24,7 +24,8 @@ public class UserDaoImpl {
 
     @Autowired
     HibernateManager hibernateManager;
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
+    static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     public User getUserById(int id) {
         Session session = null;
@@ -37,11 +38,11 @@ public class UserDaoImpl {
             session.close();
             return user;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getUserById(int id): ", e);
+            log.error("MealDaoImpl:: getUserById(int id): ", e);
             session.getTransaction().rollback();
             return null;
         } catch (Exception e) {
-            LOG.error("MealDaoImpl:: getUserById(int id): ", e);
+            log.error("MealDaoImpl:: getUserById(int id): ", e);
             return null;
         }
     }
@@ -57,11 +58,11 @@ public class UserDaoImpl {
             session.close();
             return user.getMealList();
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getMealListByUser(User user): ", e);
+            log.error("MealDaoImpl:: getMealListByUser(User user): ", e);
             session.getTransaction().rollback();
             return null;
         } catch (Exception e) {
-            LOG.error("MealDaoImpl:: getUserById(int id): ", e);
+            log.error("MealDaoImpl:: getUserById(int id): ", e);
             return null;
         }
     }
@@ -80,7 +81,7 @@ public class UserDaoImpl {
             session.close();
             return weeklyMealPlan;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getMealListAdmin(): ", e);
+            log.error("MealDaoImpl:: getMealListAdmin(): ", e);
             return null;
         }
     }
@@ -96,11 +97,11 @@ public class UserDaoImpl {
             session.close();
             return user;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getUserByEmail(String email): ", e);
+            log.error("MealDaoImpl:: getUserByEmail(String email): ", e);
             session.getTransaction().rollback();
             return null;
         } catch (Exception e) {
-            LOG.error("MealDaoImpl:: getUserById(int id): ", e);
+            log.error("MealDaoImpl:: getUserById(int id): ", e);
             return null;
         }
     }
@@ -108,7 +109,7 @@ public class UserDaoImpl {
     public User insertNewUser(User user) {
         Session session = null;
         try {
-            LOG.debug("adding new user " + user);
+            log.debug("adding new user " + user);
             session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             int userId = (int) session.save(user);
@@ -117,11 +118,11 @@ public class UserDaoImpl {
             session.close();
             return user;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getUserByEmail(String email): ", e);
+            log.error("MealDaoImpl:: getUserByEmail(String email): ", e);
             session.getTransaction().rollback();
             return null;
         } catch (Exception e) {
-            LOG.error("MealDaoImpl:: getUserById(int id): ", e);
+            log.error("MealDaoImpl:: getUserById(int id): ", e);
             return null;
         }
     }

@@ -26,7 +26,8 @@ public class MealDaoImpl {
 
     @Autowired
     HibernateManager hibernateManager;
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
+    static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     public List<Dish> getDishList() {
         Session session = null;
@@ -36,7 +37,7 @@ public class MealDaoImpl {
             session.close();
             return dishList;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getDishList(): ", e);
+            log.error("MealDaoImpl:: getDishList(): ", e);
             return null;
         }
     }
@@ -58,7 +59,7 @@ public class MealDaoImpl {
             session.close();
             return mealListFiltered;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ", e);
+            log.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ", e);
             return null;
         }
     }
@@ -76,7 +77,7 @@ public class MealDaoImpl {
             session.close();
             return mealList;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getAllMeal ");
+            log.error("MealDaoImpl:: getAllMeal ");
             return null;
         }
     }
@@ -101,10 +102,10 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (ConstraintViolationException e) {
-            LOG.error("MealDaoImpl:: updateMealForUser(): ", e);
+            log.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: updateMealForUser(): ", e);
+            log.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         }
     }
@@ -125,7 +126,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: insertMealForUser(): ", e);
+            log.error("MealDaoImpl:: insertMealForUser(): ", e);
             return -1;
         }
     }
@@ -140,10 +141,10 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (ConstraintViolationException e) {
-            LOG.error("MealDaoImpl:: insertNewDish(): ", e);
+            log.error("MealDaoImpl:: insertNewDish(): ", e);
             return -1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: insertNewDish(): ", e);
+            log.error("MealDaoImpl:: insertNewDish(): ", e);
             return -1;
         }
     }
@@ -162,7 +163,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: deleteMealForUser(): ", e);
+            log.error("MealDaoImpl:: deleteMealForUser(): ", e);
             return -1;
         }
     }
@@ -182,7 +183,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: deleteMealForUser(): ", e);
+            log.error("MealDaoImpl:: deleteMealForUser(): ", e);
             return -1;
         }
     }
@@ -200,7 +201,7 @@ public class MealDaoImpl {
             session.close();
             return 1;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: deleteMeal(): ", e);
+            log.error("MealDaoImpl:: deleteMeal(): ", e);
             return -1;
         }
     }
@@ -216,7 +217,7 @@ public class MealDaoImpl {
             session.close();
             return dishList;
         } catch (HibernateException e) {
-            LOG.error("MealDaoImpl:: getDishListByMeal(): ", e);
+            log.error("MealDaoImpl:: getDishListByMeal(): ", e);
             return null;
         }
     }

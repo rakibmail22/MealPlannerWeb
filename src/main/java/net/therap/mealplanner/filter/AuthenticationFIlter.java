@@ -15,7 +15,7 @@ import java.io.IOException;
  * @since 10/24/16
  */
 public class AuthenticationFIlter implements Filter {
-    final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
+    final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,7 +24,7 @@ public class AuthenticationFIlter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOG.debug("AuthenticationFilter:: doFilter");
+        log.debug("AuthenticationFilter:: doFilter");
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
@@ -35,10 +35,10 @@ public class AuthenticationFIlter implements Filter {
         boolean signUpRequest = req.getRequestURI().equals(signUpUri);
 
         if (loggedIn || loginRequest || signUpRequest || excludeFilter(req.getServletPath())) {
-            LOG.debug("AuthenticationFilter:: forward");
+            log.debug("AuthenticationFilter:: forward");
             chain.doFilter(req, resp);
         } else {
-            LOG.debug("AuthenticationFilter:: redirect");
+            log.debug("AuthenticationFilter:: redirect");
             ((HttpServletResponse) response).sendRedirect(loginUri);
         }
     }
@@ -49,7 +49,7 @@ public class AuthenticationFIlter implements Filter {
     }
 
     private boolean excludeFilter(String path) {
-        LOG.debug("Authentication Filter::Excluding Servlet Path " + path);
+        log.debug("Authentication Filter::Excluding Servlet Path " + path);
         if (path.startsWith("/jsp/style/") || path.startsWith("/jsp/script/")) {
             return true;
         } else {

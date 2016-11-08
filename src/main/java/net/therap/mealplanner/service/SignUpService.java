@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SignUpService {
-    final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
+    final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
     public boolean matchPassword(String pass, String verifyPass) {
         if (pass.equals(verifyPass)) {

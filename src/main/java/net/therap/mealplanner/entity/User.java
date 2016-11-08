@@ -14,10 +14,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
+
     String name;
+
     String password;
+
     String email;
+
     String role;
+
     @ManyToMany(mappedBy = "userList")
     List<Meal> mealList;
 

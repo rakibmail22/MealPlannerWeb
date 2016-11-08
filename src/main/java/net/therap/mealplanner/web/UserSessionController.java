@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +53,6 @@ public class UserSessionController {
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String loginSubmit(HttpServletRequest req) {
         try {
-            ModelAndView modelAndView = new ModelAndView("login");
             User user = (User) req.getSession().getAttribute("user");
             if (user != null) {
                 if (user.getRole().equals("admin")) {
@@ -79,7 +77,6 @@ public class UserSessionController {
                 user = userDetailsService.validateUser(username, password);
                 if (user != null) {
                     req.getSession().setAttribute("user", user);
-                    modelAndView.addObject("user", user);
                     LOG.debug("Logging in...........");
                     if (user.getRole().equals("admin")) {
                         return "redirect:/admin/home";

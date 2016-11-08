@@ -23,12 +23,12 @@ public class AdminAuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         User user = (User) req.getSession().getAttribute("user");
         if (user.getRole().equals("admin")) {
-            chain.doFilter(req,resp);
+            chain.doFilter(req, resp);
         } else {
             resp.sendRedirect(req.getContextPath() + "/jsp/404.jsp");
         }
 
-     }
+    }
 
     @Override
     public void destroy() {

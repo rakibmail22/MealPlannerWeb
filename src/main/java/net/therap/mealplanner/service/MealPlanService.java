@@ -23,9 +23,11 @@ public class MealPlanService {
 
     @Autowired
     UserDetailsService userDetailsService;
+
     @Autowired
     MealDaoImpl mealDao;
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+
+    static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     public List<Dish> getDishList() {
         List<Dish> dishList = mealDao.getDishList();

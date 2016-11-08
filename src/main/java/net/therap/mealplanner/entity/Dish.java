@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "tblDish")
 public class Dish {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @SequenceGenerator(name = "seq", allocationSize = 1)

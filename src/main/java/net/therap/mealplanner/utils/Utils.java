@@ -1,16 +1,9 @@
 package net.therap.mealplanner.utils;
 
-import net.therap.mealplanner.entity.Dish;
-import net.therap.mealplanner.entity.Meal;
-import net.therap.mealplanner.entity.User;
-import net.therap.mealplanner.service.MealPlanService;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author bashir
