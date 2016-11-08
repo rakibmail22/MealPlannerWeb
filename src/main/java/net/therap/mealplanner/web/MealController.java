@@ -74,7 +74,7 @@ public class MealController {
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "L");
             mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
-            return "forward:/admin/home";
+            return "redirect:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception LunchCreateController ::: doGet : ", e);
             return null;

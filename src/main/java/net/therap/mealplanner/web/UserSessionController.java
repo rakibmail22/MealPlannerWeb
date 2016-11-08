@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,8 +39,8 @@ public class UserSessionController {
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    public String displayLogin(HttpServletRequest req, HttpServletResponse resp) {
-        User user = (User) req.getSession().getAttribute("user");
+    public String displayLogin(HttpSession session) {
+        User user = (User) session.getAttribute("user");
         if (user != null) {
             if (user.getRole().equals("admin")) {
                 return "redirect:/admin/home";
@@ -51,7 +52,7 @@ public class UserSessionController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String loginSubmit(HttpServletRequest req, HttpServletResponse resp) {
+    public String loginSubmit(HttpServletRequest req) {
         try {
             ModelAndView modelAndView = new ModelAndView("login");
             User user = (User) req.getSession().getAttribute("user");
@@ -91,7 +92,7 @@ public class UserSessionController {
                 }
 
             }
-            modelAndView.addObject("messages", messages);
+            req.getSession().setAttribute("messages", messages);
             return "login";
         } catch (Exception e) {
             LOG.error("LoginController :: doPost: ", e);
@@ -100,7 +101,7 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String displaySignUp(HttpServletRequest req, HttpServletResponse resp) {
+    public String displaySignUp() {
         try {
             return "forward:/login";
         } catch (Exception e) {
@@ -149,9 +150,9 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest req, HttpServletResponse resp) {
+    public String logout(HttpSession session) {
         try {
-            req.getSession().invalidate();
+            session.invalidate();
             LOG.debug("LogoutController:: LoginURI: ");
             return "redirect:/login";
         } catch (Exception e) {
