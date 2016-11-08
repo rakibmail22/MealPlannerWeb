@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,10 +30,11 @@ public class MealController {
 
     @Autowired
     MealPlanService mealPlanService;
+
     final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/createNewBreakfast", method = RequestMethod.GET)
-    public ModelAndView createBreakFast(HttpServletRequest req, HttpServletResponse resp) {
+    public String createBreakFast(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             String[] checkBoxValues = req.getParameterValues("selectedDishes");
@@ -48,7 +50,7 @@ public class MealController {
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "B");
             mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
-            return new ModelAndView("redirect:/admin/home");
+            return "redirect:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception BreakfastCreateController ::: doGet : ", e);
             return null;
@@ -56,7 +58,7 @@ public class MealController {
     }
 
     @RequestMapping(value = "/createNewLunch", method = RequestMethod.GET)
-    public ModelAndView createLunch(HttpServletRequest req, HttpServletResponse resp) {
+    public String createLunch(HttpServletRequest req, HttpServletResponse resp, ModelMap model) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             String[] checkBoxValues = req.getParameterValues("selectedDishes");
@@ -72,7 +74,7 @@ public class MealController {
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "L");
             mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
-            return new ModelAndView("forward:/admin/home");
+            return "forward:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception LunchCreateController ::: doGet : ", e);
             return null;
@@ -80,14 +82,14 @@ public class MealController {
     }
 
     @RequestMapping(value = "/addNewDish", method = RequestMethod.GET)
-    public ModelAndView addDish(HttpServletRequest req, HttpServletResponse resp) {
+    public String addDish(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String dishName = req.getParameter("dishName");
             Dish dish = new Dish();
             dish.setName(dishName);
             mealPlanService.insertNewDish(dish);
             LOG.debug("Checking checkbox params ::: " + dishName);
-            return new ModelAndView("redirect:/admin/home");
+            return "redirect:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception DishAddController ::: doGet : ", e);
             return null;
@@ -95,7 +97,7 @@ public class MealController {
     }
 
     @RequestMapping(value = "/deleteMeal", method = RequestMethod.GET)
-    public ModelAndView deleteMeal(HttpServletRequest req, HttpServletResponse resp) {
+    public String deleteMeal(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
             List<Meal> selectedMealList = new ArrayList<>();
@@ -105,7 +107,7 @@ public class MealController {
             }
             mealPlanService.deleteMeal(selectedMealList);
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
-            return new ModelAndView("redirect:/admin/home");
+            return "redirect:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception MealCreateController ::: doGet : ", e);
             return null;
@@ -113,7 +115,7 @@ public class MealController {
     }
 
     @RequestMapping(value = "/updateWeeklyPlan", method = RequestMethod.GET)
-    public ModelAndView updateWeeklyMeal(HttpServletRequest req, HttpServletResponse resp) {
+    public String updateWeeklyMeal(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
             if (checkBoxValues.length > 1) {
@@ -132,7 +134,7 @@ public class MealController {
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, day, selectedMeal.getType());
             mealPlanService.updateMealPlanForUser(selectedMeal, existingMeal, user);
             LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
-            return new ModelAndView("redirect:/admin/home");
+            return "redirect:/admin/home";
         } catch (Exception e) {
             LOG.error("Exception MealCreateController ::: doGet : ", e);
             return null;

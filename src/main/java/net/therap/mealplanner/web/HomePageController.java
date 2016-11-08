@@ -28,19 +28,21 @@ public class HomePageController {
 
     @Autowired
     UserDetailsService userDetailsService;
+
     @Autowired
     MealPlanService mealPlanService;
+
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
-    public ModelAndView adminHome(HttpServletRequest req, HttpServletResponse resp) {
+    public String adminHome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             List<Dish> allDishList = mealPlanService.getDishList();
             Map<String, Map<String, Meal>> weeklyMealMap = userDetailsService.getWeeklyMealMap(user);
             req.getSession().setAttribute("allDishes", allDishList);
             req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
-            return new ModelAndView("admin/home");
+            return "admin/home";
         } catch (Exception e) {
             LOG.error("AdminHomeController ::: doGet : ", e);
             return null;
@@ -48,11 +50,11 @@ public class HomePageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView userHome(HttpServletRequest req, HttpServletResponse resp) {
+    public String userHome(HttpServletRequest req, HttpServletResponse resp) {
         try {
             Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
             req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
-            return new ModelAndView("home");
+            return "home";
         } catch (Exception e) {
             LOG.error("HomeController ::: doGet : ", e);
             return null;

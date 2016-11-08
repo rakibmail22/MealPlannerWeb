@@ -28,37 +28,38 @@ public class UserSessionController {
 
     @Autowired
     UserDetailsService userDetailsService;
+
     @Autowired
     SignUpService signUpService;
+
     @Autowired
     Utils utils;
+
     static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    public ModelAndView displayLogin(HttpServletRequest req, HttpServletResponse resp) {
-        ModelAndView modelAndView = new ModelAndView("login");
+    public String displayLogin(HttpServletRequest req, HttpServletResponse resp) {
         User user = (User) req.getSession().getAttribute("user");
         if (user != null) {
             if (user.getRole().equals("admin")) {
-                return new ModelAndView("redirect:/admin/home");
+                return "redirect:/admin/home";
             } else {
-                return new ModelAndView("redirect:/home");
+                return "redirect:/home";
             }
         }
-        return modelAndView;
+        return "login";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp) {
+    public String loginSubmit(HttpServletRequest req, HttpServletResponse resp) {
         try {
             ModelAndView modelAndView = new ModelAndView("login");
             User user = (User) req.getSession().getAttribute("user");
-            LOG.debug("TEST DEBUG" + user);
             if (user != null) {
                 if (user.getRole().equals("admin")) {
-                    return new ModelAndView("redirect:/admin/login");
+                    return "redirect:/admin/login";
                 } else {
-                    return new ModelAndView("redirect:/login");
+                    return "redirect:/login";
                 }
             }
 
@@ -80,11 +81,10 @@ public class UserSessionController {
                     modelAndView.addObject("user", user);
                     LOG.debug("Logging in...........");
                     if (user.getRole().equals("admin")) {
-                        modelAndView.setViewName("redirect:/admin/home");
+                        return "redirect:/admin/home";
                     } else {
-                        modelAndView.setViewName("redirect:/home");
+                        return "redirect:/home";
                     }
-                    return modelAndView;
                 } else {
                     LOG.debug("Logging failed...........");
                     messages.put("login", "Unknown login. Try again.");
@@ -92,7 +92,7 @@ public class UserSessionController {
 
             }
             modelAndView.addObject("messages", messages);
-            return new ModelAndView();
+            return "login";
         } catch (Exception e) {
             LOG.error("LoginController :: doPost: ", e);
             return null;
@@ -100,9 +100,9 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView displaySignUp(HttpServletRequest req, HttpServletResponse resp) {
+    public String displaySignUp(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            return new ModelAndView("forward:/login");
+            return "forward:/login";
         } catch (Exception e) {
             LOG.error("SignUpController :: doGet: ", e);
             return null;
@@ -110,7 +110,7 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ModelAndView signUpSubmit(HttpServletRequest req, HttpServletResponse resp) {
+    public String signUpSubmit(HttpServletRequest req, HttpServletResponse resp) {
         LOG.info("Entered signup");
         try {
             String name = req.getParameter("sg_name");
@@ -138,10 +138,10 @@ public class UserSessionController {
                 user.setPassword(utils.hashMd5(password));
                 user = userDetailsService.addNewUser(user);
                 req.getSession().setAttribute("user", user);
-                return new ModelAndView("forward:/login");
+                return "forward:/login";
             }
             req.setAttribute("messages", messages);
-            return new ModelAndView("forward:/login");
+            return "forward:/login";
         } catch (Exception e) {
             LOG.error("SignUpController :: doPost: ", e);
             return null;
@@ -149,11 +149,11 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logout(HttpServletRequest req, HttpServletResponse resp) {
+    public String logout(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getSession().invalidate();
             LOG.debug("LogoutController:: LoginURI: ");
-            return new ModelAndView("redirect:/login");
+            return "redirect:/login";
         } catch (Exception e) {
             LOG.error("LogoutController :: doGet: ", e);
             return null;
