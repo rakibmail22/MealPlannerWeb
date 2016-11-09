@@ -30,10 +30,10 @@ public class MealController {
     @Autowired
     MealPlanService mealPlanService;
 
-    final static Logger LOG = LogManager.getLogger(SimpleLogger.class);
+    final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/createNewBreakfast", method = RequestMethod.GET)
-    public String createBreakFast(HttpServletRequest req, HttpServletResponse resp) {
+    public String createBreakFast(HttpServletRequest req) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             String[] checkBoxValues = req.getParameterValues("selectedDishes");
@@ -48,16 +48,16 @@ public class MealController {
             meal.setType("B");
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "B");
             mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
-            LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
+            log.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
             return "redirect:/admin/home";
         } catch (Exception e) {
-            LOG.error("Exception BreakfastCreateController ::: doGet : ", e);
+            log.error("Exception BreakfastCreateController ::: doGet : ", e);
             return null;
         }
     }
 
     @RequestMapping(value = "/createNewLunch", method = RequestMethod.GET)
-    public String createLunch(HttpServletRequest req, HttpServletResponse resp, ModelMap model) {
+    public String createLunch(HttpServletRequest req) {
         try {
             User user = (User) req.getSession().getAttribute("user");
             String[] checkBoxValues = req.getParameterValues("selectedDishes");
@@ -72,31 +72,31 @@ public class MealController {
             meal.setType("L");
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, req.getParameter("daySelect"), "L");
             mealPlanService.updateMealPlanForUser(meal, existingMeal, user);
-            LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
+            log.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedDishList.toArray()));
             return "redirect:/admin/home";
         } catch (Exception e) {
-            LOG.error("Exception LunchCreateController ::: doGet : ", e);
+            log.error("Exception LunchCreateController ::: doGet : ", e);
             return null;
         }
     }
 
     @RequestMapping(value = "/addNewDish", method = RequestMethod.GET)
-    public String addDish(HttpServletRequest req, HttpServletResponse resp) {
+    public String addDish(HttpServletRequest req) {
         try {
             String dishName = req.getParameter("dishName");
             Dish dish = new Dish();
             dish.setName(dishName);
             mealPlanService.insertNewDish(dish);
-            LOG.debug("Checking checkbox params ::: " + dishName);
+            log.debug("Checking checkbox params ::: " + dishName);
             return "redirect:/admin/home";
         } catch (Exception e) {
-            LOG.error("Exception DishAddController ::: doGet : ", e);
+            log.error("Exception DishAddController ::: doGet : ", e);
             return null;
         }
     }
 
     @RequestMapping(value = "/deleteMeal", method = RequestMethod.GET)
-    public String deleteMeal(HttpServletRequest req, HttpServletResponse resp) {
+    public String deleteMeal(HttpServletRequest req) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
             List<Meal> selectedMealList = new ArrayList<>();
@@ -105,37 +105,37 @@ public class MealController {
                 selectedMealList.add(allMealList.get(Integer.parseInt(index)));
             }
             mealPlanService.deleteMeal(selectedMealList);
-            LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
+            log.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
             return "redirect:/admin/home";
         } catch (Exception e) {
-            LOG.error("Exception MealCreateController ::: doGet : ", e);
+            log.error("Exception MealCreateController ::: doGet : ", e);
             return null;
         }
     }
 
     @RequestMapping(value = "/updateWeeklyPlan", method = RequestMethod.GET)
-    public String updateWeeklyMeal(HttpServletRequest req, HttpServletResponse resp) {
+    public String updateWeeklyMeal(HttpServletRequest req) {
         try {
             String[] checkBoxValues = req.getParameterValues("selectedMeals");
             if (checkBoxValues.length > 1) {
-                LOG.error("Multiple Checkbox Selected");
+                log.error("Multiple Checkbox Selected");
             }
             if (checkBoxValues.length == 0) {
-                LOG.info("No Meal Selected");
+                log.info("No Meal Selected");
             }
             List<Meal> selectedMealList = new ArrayList<>();
             List<Meal> allMealList = (List<Meal>) req.getSession().getAttribute("allMeals");
             Meal selectedMeal = allMealList.get(Integer.parseInt(checkBoxValues[0]));
             String day = req.getParameter("daySelect");
-            LOG.debug("**************************** " + day);
+            log.debug("**************************** " + day);
             User user = (User) req.getSession().getAttribute("user");
             selectedMeal.setDay(day);
             Meal existingMeal = mealPlanService.getMealForUserForDay(user, day, selectedMeal.getType());
             mealPlanService.updateMealPlanForUser(selectedMeal, existingMeal, user);
-            LOG.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
+            log.debug("Checking checkbox params ::: " + Arrays.deepToString(selectedMealList.toArray()));
             return "redirect:/admin/home";
         } catch (Exception e) {
-            LOG.error("Exception MealCreateController ::: doGet : ", e);
+            log.error("Exception MealCreateController ::: doGet : ", e);
             return null;
         }
     }

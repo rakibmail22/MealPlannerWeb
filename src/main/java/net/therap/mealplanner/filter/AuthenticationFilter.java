@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author bashir
  * @since 10/24/16
  */
-public class AuthenticationFIlter implements Filter {
+public class AuthenticationFilter implements Filter {
     final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @Override

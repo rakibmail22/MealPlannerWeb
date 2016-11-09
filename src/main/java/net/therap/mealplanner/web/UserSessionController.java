@@ -35,7 +35,7 @@ public class UserSessionController {
     @Autowired
     Utils utils;
 
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+    static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session) {
@@ -72,19 +72,19 @@ public class UserSessionController {
                 messages.put("password", "Invalid Password");
             }
 
-            LOG.debug("LOGIN doPost:: Username: " + username + " Password: " + password);
+            log.debug("LOGIN doPost:: Username: " + username + " Password: " + password);
             if (messages.isEmpty()) {
                 user = userDetailsService.validateUser(username, password);
                 if (user != null) {
                     req.getSession().setAttribute("user", user);
-                    LOG.debug("Logging in...........");
+                    log.debug("Logging in...........");
                     if (user.getRole().equals("admin")) {
                         return "redirect:/admin/home";
                     } else {
                         return "redirect:/home";
                     }
                 } else {
-                    LOG.debug("Logging failed...........");
+                    log.debug("Logging failed...........");
                     messages.put("login", "Unknown login. Try again.");
                 }
 
@@ -92,7 +92,7 @@ public class UserSessionController {
             req.getSession().setAttribute("messages", messages);
             return "login";
         } catch (Exception e) {
-            LOG.error("LoginController :: doPost: ", e);
+            log.error("LoginController :: doPost: ", e);
             return null;
         }
     }
@@ -102,14 +102,14 @@ public class UserSessionController {
         try {
             return "forward:/login";
         } catch (Exception e) {
-            LOG.error("SignUpController :: doGet: ", e);
+            log.error("SignUpController :: doGet: ", e);
             return null;
         }
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signUpSubmit(HttpServletRequest req, HttpServletResponse resp) {
-        LOG.info("Entered signup");
+    public String signUpSubmit(HttpServletRequest req) {
+        log.info("Entered signup");
         try {
             String name = req.getParameter("sg_name");
             String email = req.getParameter("sg_email");
@@ -127,7 +127,7 @@ public class UserSessionController {
                 messages.put("password", "Invalid Password");
             }
 
-            LOG.debug("SignUp doPost:: Username: " + name + " " + email + " " + password);
+            log.debug("SignUp doPost:: Username: " + name + " " + email + " " + password);
             if (messages.isEmpty()) {
                 User user = new User();
                 user.setName(name);
@@ -141,7 +141,7 @@ public class UserSessionController {
             req.setAttribute("messages", messages);
             return "forward:/login";
         } catch (Exception e) {
-            LOG.error("SignUpController :: doPost: ", e);
+            log.error("SignUpController :: doPost: ", e);
             return null;
         }
     }
@@ -150,12 +150,17 @@ public class UserSessionController {
     public String logout(HttpSession session) {
         try {
             session.invalidate();
-            LOG.debug("LogoutController:: LoginURI: ");
+            log.debug("LogoutController:: LoginURI: ");
             return "redirect:/login";
         } catch (Exception e) {
-            LOG.error("LogoutController :: doGet: ", e);
+            log.error("LogoutController :: doGet: ", e);
             return null;
         }
+    }
+
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String pageNotFound(){
+        return "404";
     }
 
 }

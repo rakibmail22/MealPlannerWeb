@@ -25,7 +25,7 @@ public class AdminAuthFilter implements Filter {
         if (user.getRole().equals("admin")) {
             chain.doFilter(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/jsp/404.jsp");
+            resp.sendRedirect(req.getContextPath() + "/404");
         }
 
     }

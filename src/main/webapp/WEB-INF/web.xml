@@ -37,7 +37,7 @@
 
     <filter>
         <filter-name>authenticate</filter-name>
-        <filter-class>net.therap.mealplanner.filter.AuthenticationFIlter</filter-class>
+        <filter-class>net.therap.mealplanner.filter.AuthenticationFilter</filter-class>
     </filter>
 
     <filter>

@@ -31,7 +31,7 @@ public class HomePageController {
     @Autowired
     MealPlanService mealPlanService;
 
-    static final Logger LOG = LogManager.getLogger(SimpleLogger.class);
+    static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public String adminHome(HttpServletRequest req, HttpServletResponse resp) {
@@ -43,7 +43,7 @@ public class HomePageController {
             req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
             return "admin/home";
         } catch (Exception e) {
-            LOG.error("AdminHomeController ::: doGet : ", e);
+            log.error("AdminHomeController ::: doGet : ", e);
             return null;
         }
     }
@@ -55,7 +55,7 @@ public class HomePageController {
             req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
             return "home";
         } catch (Exception e) {
-            LOG.error("HomeController ::: doGet : ", e);
+            log.error("HomeController ::: doGet : ", e);
             return null;
         }
     }
