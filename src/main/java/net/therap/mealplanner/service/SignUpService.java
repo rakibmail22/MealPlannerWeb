@@ -14,11 +14,12 @@ public class SignUpService {
 
     final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
-    public boolean matchPassword(String pass, String verifyPass) {
-        if (pass.equals(verifyPass)) {
-            return true;
-        } else {
+    public boolean isValidSignUpForm(String name, String email, String password, String password2) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || password2.isEmpty()
+                || name == null || email == null || password == null || password2 == null) {
             return false;
+        } else {
+            return password.equals(password2);
         }
     }
 }

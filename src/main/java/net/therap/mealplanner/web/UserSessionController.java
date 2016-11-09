@@ -11,12 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author bashir
@@ -40,59 +37,33 @@ public class UserSessionController {
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
-            if (user.getRole().equals("admin")) {
-                return "redirect:/admin/home";
-            } else {
-                return "redirect:/home";
-            }
+        if (userAlreadyLoggedIn(user)) {
+            return redirectUserHome(user);
         }
         return "login";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String loginSubmit(HttpServletRequest req) {
+    public String loginSubmit(HttpSession session,
+                              @RequestParam(name = "lg_username", defaultValue = "") String username,
+                              @RequestParam(name = "lg_password", defaultValue = "") String password) {
         try {
-            User user = (User) req.getSession().getAttribute("user");
+            User user = (User) session.getAttribute("user");
+            if (userAlreadyLoggedIn(user)) {
+                return redirectUserHome(user);
+            }
+            password = utils.hashMd5(password);
+            user = userDetailsService.validateUser(username, password);
             if (user != null) {
-                if (user.getRole().equals("admin")) {
-                    return "redirect:/admin/login";
-                } else {
-                    return "redirect:/login";
-                }
+                session.setAttribute("user", user);
+                log.debug("UserSessionController : loginSubmit ::: Username: " + username);
+                return redirectUserHome(user);
+            } else {
+                log.debug("UserSessionController : loginSubmit ::: Login Failed");
+                return "login";
             }
-
-            String username = req.getParameter("lg_username");
-            String password = utils.hashMd5(req.getParameter("lg_password")).trim();
-            Map<String, String> messages = new HashMap<>();
-            if (username == null || username.isEmpty()) {
-                messages.put("username", "Username is required ");
-            }
-            if (password == null || password.isEmpty()) {
-                messages.put("password", "Invalid Password");
-            }
-
-            log.debug("LOGIN doPost:: Username: " + username + " Password: " + password);
-            if (messages.isEmpty()) {
-                user = userDetailsService.validateUser(username, password);
-                if (user != null) {
-                    req.getSession().setAttribute("user", user);
-                    log.debug("Logging in...........");
-                    if (user.getRole().equals("admin")) {
-                        return "redirect:/admin/home";
-                    } else {
-                        return "redirect:/home";
-                    }
-                } else {
-                    log.debug("Logging failed...........");
-                    messages.put("login", "Unknown login. Try again.");
-                }
-
-            }
-            req.getSession().setAttribute("messages", messages);
-            return "login";
         } catch (Exception e) {
-            log.error("LoginController :: doPost: ", e);
+            log.error("UserSessionController : loginSubmit ::: exception ", e);
             return null;
         }
     }
@@ -100,7 +71,7 @@ public class UserSessionController {
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String displaySignUp() {
         try {
-            return "forward:/login";
+            return "login";
         } catch (Exception e) {
             log.error("SignUpController :: doGet: ", e);
             return null;
@@ -108,40 +79,25 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signUpSubmit(HttpServletRequest req) {
-        log.info("Entered signup");
+    public String signUpSubmit(HttpSession session,
+                               @RequestParam(name = "sg_name", defaultValue = "") String name,
+                               @RequestParam(name = "sg_email", defaultValue = "") String email,
+                               @RequestParam(name = "sg_password", defaultValue = "") String password,
+                               @RequestParam(name = "sg_password2", defaultValue = "") String password2) {
         try {
-            String name = req.getParameter("sg_name");
-            String email = req.getParameter("sg_email");
-            String password = (signUpService.matchPassword(
-                    req.getParameter("sg_password"), req.getParameter("sg_password2")))
-                    ? req.getParameter("sg_password") : null;
-            Map<String, String> messages = new HashMap<>();
-            if (name == null || name.isEmpty()) {
-                messages.put("username", "Name is required ");
-            }
-            if (email == null || name.isEmpty()) {
-                messages.put("email", "Email is required ");
-            }
-            if (password == null || password.isEmpty()) {
-                messages.put("password", "Invalid Password");
-            }
-
-            log.debug("SignUp doPost:: Username: " + name + " " + email + " " + password);
-            if (messages.isEmpty()) {
+            if (signUpService.isValidSignUpForm(name, email, password, password2)) {
                 User user = new User();
                 user.setName(name);
                 user.setEmail(email);
                 user.setRole("user");
                 user.setPassword(utils.hashMd5(password));
                 user = userDetailsService.addNewUser(user);
-                req.getSession().setAttribute("user", user);
-                return "forward:/login";
+                session.setAttribute("user", user);
             }
-            req.setAttribute("messages", messages);
+            log.error("UserSessionController : signUpSubmit::: name "+name);
             return "forward:/login";
         } catch (Exception e) {
-            log.error("SignUpController :: doPost: ", e);
+            log.error("UserSessionController : signUpSubmit::: exception "+e);
             return null;
         }
     }
@@ -150,17 +106,38 @@ public class UserSessionController {
     public String logout(HttpSession session) {
         try {
             session.invalidate();
-            log.debug("LogoutController:: LoginURI: ");
+            log.debug("UserSessionController : logout");
             return "redirect:/login";
         } catch (Exception e) {
-            log.error("LogoutController :: doGet: ", e);
+            log.error("UserSessionController : logout::: exception "+e);
             return null;
         }
     }
 
     @RequestMapping(value = "/404", method = RequestMethod.GET)
-    public String pageNotFound(){
+    public String pageNotFound() {
+        log.debug("UserSessionController : pageNotFound");
         return "404";
+    }
+
+    public boolean userAlreadyLoggedIn(User user) {
+        if (user != null) {
+            log.debug("UserSessionController : userAlreadyLoggedIn ::: "+true);
+            return true;
+        } else {
+            log.debug("UserSessionController : userAlreadyLoggedIn ::: "+false);
+            return false;
+        }
+    }
+
+    private String redirectUserHome(User user) {
+        if (user.getRole().equals("admin")) {
+            log.debug("UserSessionController : redirectUserHome ::: admin");
+            return "redirect:/admin/home";
+        } else {
+            log.debug("UserSessionController : redirectUserHome ::: user");
+            return "redirect:/home";
+        }
     }
 
 }

@@ -46,11 +46,10 @@ public class UserDetailsService {
     }
 
     public User validateUser(String email, String password) {
-        User user = userDao.getUserByEmail(email);
-        if (user != null && (user.getPassword().equals(password) && (user.getEmail().equals(email)))) {
-            return user;
-        } else {
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             return null;
+        } else {
+            return userDao.getUserByEmail(email);
         }
     }
 
