@@ -3,6 +3,7 @@ package net.therap.mealplanner.service;
 import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class UserDetailsService {
 
     @Autowired
     UserDaoImpl userDao;
+
+    @Autowired
+    Utils utils;
 
     public User getUserByUserId(int userId) {
         User user = userDao.getUserById(userId);
@@ -49,7 +53,8 @@ public class UserDetailsService {
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             return null;
         } else {
-            return userDao.getUserByEmail(email);
+            User user = userDao.getUserByEmail(email);
+            return (user.getPassword().equals(utils.hashMd5(password))) ? user : null;
         }
     }
 

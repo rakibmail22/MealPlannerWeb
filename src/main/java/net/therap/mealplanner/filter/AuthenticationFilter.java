@@ -24,7 +24,6 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.debug("AuthenticationFilter:: doFilter");
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
@@ -35,10 +34,8 @@ public class AuthenticationFilter implements Filter {
         boolean signUpRequest = req.getRequestURI().equals(signUpUri);
 
         if (loggedIn || loginRequest || signUpRequest || excludeFilter(req.getServletPath())) {
-            log.debug("AuthenticationFilter:: forward");
             chain.doFilter(req, resp);
         } else {
-            log.debug("AuthenticationFilter:: redirect");
             ((HttpServletResponse) response).sendRedirect(loginUri);
         }
     }
@@ -49,7 +46,6 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean excludeFilter(String path) {
-        log.debug("Authentication Filter::Excluding Servlet Path " + path);
         if (path.startsWith("/jsp/style/") || path.startsWith("/jsp/script/")) {
             return true;
         } else {

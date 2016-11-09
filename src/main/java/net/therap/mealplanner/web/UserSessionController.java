@@ -3,7 +3,6 @@ package net.therap.mealplanner.web;
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
-import net.therap.mealplanner.utils.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.simple.SimpleLogger;
@@ -29,9 +28,6 @@ public class UserSessionController {
     @Autowired
     SignUpService signUpService;
 
-    @Autowired
-    Utils utils;
-
     static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
@@ -52,7 +48,6 @@ public class UserSessionController {
             if (userAlreadyLoggedIn(user)) {
                 return redirectUserHome(user);
             }
-            password = utils.hashMd5(password);
             user = userDetailsService.validateUser(username, password);
             if (user != null) {
                 session.setAttribute("user", user);
@@ -73,7 +68,7 @@ public class UserSessionController {
         try {
             return "login";
         } catch (Exception e) {
-            log.error("SignUpController :: doGet: ", e);
+            log.error("UserSessionController : displaySignUp ::: exception ", e);
             return null;
         }
     }
@@ -86,18 +81,14 @@ public class UserSessionController {
                                @RequestParam(name = "sg_password2", defaultValue = "") String password2) {
         try {
             if (signUpService.isValidSignUpForm(name, email, password, password2)) {
-                User user = new User();
-                user.setName(name);
-                user.setEmail(email);
-                user.setRole("user");
-                user.setPassword(utils.hashMd5(password));
+                User user = signUpService.createNewUser(name, email, password);
                 user = userDetailsService.addNewUser(user);
                 session.setAttribute("user", user);
             }
-            log.error("UserSessionController : signUpSubmit::: name "+name);
+            log.debug("UserSessionController : signUpSubmit::: name " + name);
             return "forward:/login";
         } catch (Exception e) {
-            log.error("UserSessionController : signUpSubmit::: exception "+e);
+            log.error("UserSessionController : signUpSubmit::: exception " + e);
             return null;
         }
     }
@@ -109,7 +100,7 @@ public class UserSessionController {
             log.debug("UserSessionController : logout");
             return "redirect:/login";
         } catch (Exception e) {
-            log.error("UserSessionController : logout::: exception "+e);
+            log.error("UserSessionController : logout::: exception " + e);
             return null;
         }
     }
@@ -122,10 +113,10 @@ public class UserSessionController {
 
     public boolean userAlreadyLoggedIn(User user) {
         if (user != null) {
-            log.debug("UserSessionController : userAlreadyLoggedIn ::: "+true);
+            log.debug("UserSessionController : userAlreadyLoggedIn ::: " + true);
             return true;
         } else {
-            log.debug("UserSessionController : userAlreadyLoggedIn ::: "+false);
+            log.debug("UserSessionController : userAlreadyLoggedIn ::: " + false);
             return false;
         }
     }
