@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -34,13 +35,13 @@ public class HomePageController {
     static final Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
-    public String adminHome(HttpServletRequest req, HttpServletResponse resp) {
+    public String adminHome(HttpSession session) {
         try {
-            User user = (User) req.getSession().getAttribute("user");
+            User user = (User) session.getAttribute("user");
             List<Dish> allDishList = mealPlanService.getDishList();
             Map<String, Map<String, Meal>> weeklyMealMap = userDetailsService.getWeeklyMealMap(user);
-            req.getSession().setAttribute("allDishes", allDishList);
-            req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
+            session.setAttribute("allDishes", allDishList);
+            session.setAttribute("weeklyMeal", weeklyMealMap);
             return "admin/home";
         } catch (Exception e) {
             log.error("AdminHomeController ::: doGet : ", e);
@@ -49,10 +50,10 @@ public class HomePageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String userHome(HttpServletRequest req, HttpServletResponse resp) {
+    public String userHome(HttpSession session) {
         try {
             Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
-            req.getSession().setAttribute("weeklyMeal", weeklyMealMap);
+            session.setAttribute("weeklyMeal", weeklyMealMap);
             return "home";
         } catch (Exception e) {
             log.error("HomeController ::: doGet : ", e);
