@@ -27,63 +27,25 @@ public class MealDaoImpl {
     @Autowired
     HibernateManager hibernateManager;
 
-    static final Logger log = LogManager.getLogger(SimpleLogger.class);
-
     public List<Dish> getDishList() {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             List<Dish> dishList = session.createCriteria(Dish.class).list();
             session.close();
+
             return dishList;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: getDishList(): ", e);
-            return null;
-        }
-    }
-
-    public List<Meal> getAllMealListOfTypeAndDay(String type, String day) {
-        Session session = null;
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            List<Meal> mealList = session.createCriteria(Meal.class).list();
-            session.getTransaction().commit();
-
-            List<Meal> mealListFiltered = new ArrayList<Meal>();
-            for (Meal meal : mealList) {
-                if (meal.getType().equals(type) && meal.getDay().equals(day)) {
-                    mealListFiltered.add(meal);
-                }
-            }
-            session.close();
-            return mealListFiltered;
-        } catch (HibernateException e) {
-            log.error("MealDaoImpl:: getAllMealListOfTypeAndDay(): ", e);
-            return null;
-        }
-    }
-
-    public List<Meal> getAllMeal() {
-        Session session = null;
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            List<Meal> mealList = session.createCriteria(Meal.class).list();
-            for (Meal meal : mealList) {
-                Hibernate.initialize(meal.getMealDishes());
-            }
-            session.getTransaction().commit();
-            session.close();
-            return mealList;
-        } catch (HibernateException e) {
-            log.error("MealDaoImpl:: getAllMeal ");
             return null;
         }
     }
 
     public int updateMealForUser(Meal existingMeal, Meal newMeal, User user) {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
@@ -100,18 +62,19 @@ public class MealDaoImpl {
             session.getTransaction().commit();
             session.flush();
             session.close();
+
             return 1;
         } catch (ConstraintViolationException e) {
-            log.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: updateMealForUser(): ", e);
             return -1;
         }
     }
 
     public int insertMealForUser(Meal newMeal, List<Dish> dishList, User user) {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
@@ -124,72 +87,36 @@ public class MealDaoImpl {
             newMeal.getUserList().add(user);
             session.getTransaction().commit();
             session.close();
+
             return 1;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: insertMealForUser(): ", e);
             return -1;
         }
     }
 
     public int insertNewDish(Dish dish) {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(dish);
             session.getTransaction().commit();
             session.close();
+
             return 1;
         } catch (ConstraintViolationException e) {
-            log.error("MealDaoImpl:: insertNewDish(): ", e);
             return -1;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: insertNewDish(): ", e);
-            return -1;
-        }
-    }
-
-    public int deleteMealForUser(Meal meal, User user) {
-        Session session = null;
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            meal = (Meal) session.merge(meal);
-            user = (User) session.merge(user);
-            List<Meal> userMealList = user.getMealList();
-            userMealList.remove(meal);
-            meal.getUserList().remove(user);
-            session.getTransaction().commit();
-            session.close();
-            return 1;
-        } catch (HibernateException e) {
-            log.error("MealDaoImpl:: deleteMealForUser(): ", e);
-            return -1;
-        }
-    }
-
-    public int createNewMeal(List<Dish> dishList, String type) {
-        Session session = null;
-        try {
-            Meal meal = new Meal();
-            for (Dish dish : dishList) {
-                meal.getMealDishes().add(dish);
-                meal.setType(type);
-            }
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(meal);
-            session.getTransaction().commit();
-            session.close();
-            return 1;
-        } catch (HibernateException e) {
-            log.error("MealDaoImpl:: deleteMealForUser(): ", e);
             return -1;
         }
     }
 
     public int deleteMeal(List<Meal> selectedMealList) {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             for (Meal meal : selectedMealList) {
@@ -199,15 +126,17 @@ public class MealDaoImpl {
             }
             session.getTransaction().commit();
             session.close();
+
             return 1;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: deleteMeal(): ", e);
             return -1;
         }
     }
 
     public List<Dish> getDishListByMeal(Meal meal) {
-        Session session = null;
+
+        Session session;
+
         try {
             session = hibernateManager.getSessionFactory().openSession();
             meal = (Meal) session.merge(meal);
@@ -215,9 +144,9 @@ public class MealDaoImpl {
             Hibernate.initialize(dishList.size());
             session.evict(meal);
             session.close();
+
             return dishList;
         } catch (HibernateException e) {
-            log.error("MealDaoImpl:: getDishListByMeal(): ", e);
             return null;
         }
     }

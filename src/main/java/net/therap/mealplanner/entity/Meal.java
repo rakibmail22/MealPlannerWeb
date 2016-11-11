@@ -9,7 +9,7 @@ import java.util.List;
  * @since 10/17/16
  */
 @Entity
-@Table(name = "tblMeal")
+@Table(name="meal")
 public class Meal {
 
     @Id
@@ -24,7 +24,7 @@ public class Meal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "tblMeal_Dish",
+            name = "meal_dish",
             joinColumns = @JoinColumn(name = "mealId", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "dishId", nullable = false)
     )
@@ -32,7 +32,7 @@ public class Meal {
 
     @ManyToMany
     @JoinTable(
-            name = "tblMeal_User",
+            name = "meal_user",
             joinColumns = @JoinColumn(name = "mealId", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "userId", nullable = false)
     )

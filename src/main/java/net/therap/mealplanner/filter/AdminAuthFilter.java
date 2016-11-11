@@ -12,6 +12,7 @@ import java.io.IOException;
  * @since 10/30/16
  */
 public class AdminAuthFilter implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

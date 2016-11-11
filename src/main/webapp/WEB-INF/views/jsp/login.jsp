@@ -3,9 +3,9 @@
 <head>
     <title>Login</title>
     <!-- All the files that are required -->
-    <c:set var="basePath" value="${pageContext.request.contextPath}" />
+    <c:set var="basePath" value="${pageContext.request.contextPath}"/>
     <link rel="stylesheet" href="${basePath}/statics/style/font-awesome.min.css">
-    <link rel='statics/style/font-awesome.min.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="${basePath}/statics/style/meal-table.css">
     <script src="${basePath}/statics/script/jquery.validate.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 </head>

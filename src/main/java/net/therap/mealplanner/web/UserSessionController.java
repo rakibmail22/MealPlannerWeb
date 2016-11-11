@@ -28,14 +28,15 @@ public class UserSessionController {
     @Autowired
     SignUpService signUpService;
 
-    static final Logger log = LogManager.getLogger(SimpleLogger.class);
-
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session) {
+
         User user = (User) session.getAttribute("user");
+
         if (userAlreadyLoggedIn(user)) {
             return redirectUserHome(user);
         }
+
         return "login";
     }
 
@@ -43,34 +44,27 @@ public class UserSessionController {
     public String loginSubmit(HttpSession session,
                               @RequestParam(name = "lg_username", defaultValue = "") String username,
                               @RequestParam(name = "lg_password", defaultValue = "") String password) {
-        try {
-            User user = (User) session.getAttribute("user");
-            if (userAlreadyLoggedIn(user)) {
-                return redirectUserHome(user);
-            }
-            user = userDetailsService.validateUser(username, password);
-            if (user != null) {
-                session.setAttribute("user", user);
-                log.debug("UserSessionController : loginSubmit ::: Username: " + username);
-                return redirectUserHome(user);
-            } else {
-                log.debug("UserSessionController : loginSubmit ::: Login Failed");
-                return "login";
-            }
-        } catch (Exception e) {
-            log.error("UserSessionController : loginSubmit ::: exception ", e);
-            return null;
+
+        User user = (User) session.getAttribute("user");
+
+        if (userAlreadyLoggedIn(user)) {
+            return redirectUserHome(user);
+        }
+
+        user = userDetailsService.validateUser(username, password);
+
+        if (null != user) {
+            session.setAttribute("user", user);
+            return redirectUserHome(user);
+        } else {
+            return "login";
         }
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String displaySignUp() {
-        try {
-            return "login";
-        } catch (Exception e) {
-            log.error("UserSessionController : displaySignUp ::: exception ", e);
-            return null;
-        }
+
+        return "login";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -79,56 +73,43 @@ public class UserSessionController {
                                @RequestParam(name = "sg_email", defaultValue = "") String email,
                                @RequestParam(name = "sg_password", defaultValue = "") String password,
                                @RequestParam(name = "sg_password2", defaultValue = "") String password2) {
-        try {
-            if (signUpService.isValidSignUpForm(name, email, password, password2)) {
-                User user = signUpService.createNewUser(name, email, password);
-                user = userDetailsService.addNewUser(user);
-                session.setAttribute("user", user);
-            }
-            log.debug("UserSessionController : signUpSubmit::: name " + name);
-            return "forward:/login";
-        } catch (Exception e) {
-            log.error("UserSessionController : signUpSubmit::: exception " + e);
-            return null;
+
+        if (signUpService.isValidSignUpForm(name, email, password, password2)) {
+            User user = signUpService.createNewUser(name, email, password);
+            user = userDetailsService.addNewUser(user);
+            session.setAttribute("user", user);
         }
+
+        return "forward:/login";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
-        try {
-            session.invalidate();
-            log.debug("UserSessionController : logout");
-            return "redirect:/login";
-        } catch (Exception e) {
-            log.error("UserSessionController : logout::: exception " + e);
-            return null;
-        }
+
+        session.invalidate();
+
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/404", method = RequestMethod.GET)
     public String pageNotFound() {
-        log.debug("UserSessionController : pageNotFound");
+
         return "404";
     }
 
     public boolean userAlreadyLoggedIn(User user) {
-        if (user != null) {
-            log.debug("UserSessionController : userAlreadyLoggedIn ::: " + true);
+        if (null != user) {
             return true;
         } else {
-            log.debug("UserSessionController : userAlreadyLoggedIn ::: " + false);
             return false;
         }
     }
 
     private String redirectUserHome(User user) {
-        if (user.getRole().equals("admin")) {
-            log.debug("UserSessionController : redirectUserHome ::: admin");
+        if (("admin").equals(user.getRole())) {
             return "redirect:/admin/home";
         } else {
-            log.debug("UserSessionController : redirectUserHome ::: user");
             return "redirect:/home";
         }
     }
-
 }

@@ -24,45 +24,30 @@ public class UserDetailsService {
     @Autowired
     Utils utils;
 
-    public User getUserByUserId(int userId) {
-        User user = userDao.getUserById(userId);
-        return user;
-    }
-
-    public Map<String, Map<String, Meal>> getWeeklyMealMap(User user) {
-        List<Meal> userMealList = getMealListByUser(user);
-        Map<String, Map<String, Meal>> dayMealMap = new HashMap<String, Map<String, Meal>>();
-        for (Meal userMeal : userMealList) {
-            Map<String, Meal> mealMap = dayMealMap.get(userMeal.getDay());
-            if (mealMap == null) {
-                mealMap = new HashMap<String, Meal>();
-            }
-            mealMap.put(userMeal.getType(), userMeal);
-            dayMealMap.put(userMeal.getDay(), mealMap);
-        }
-        return dayMealMap;
-    }
-
-
     public List<Meal> getMealListByUser(User user) {
-        List<Meal> userMealList = userDao.getMealListByUser(user);
-        return userMealList;
+
+        return userDao.getMealListByUser(user);
     }
 
     public User validateUser(String email, String password) {
+
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+
             return null;
         } else {
             User user = userDao.getUserByEmail(email);
+
             return (user.getPassword().equals(utils.hashMd5(password))) ? user : null;
         }
     }
 
     public User addNewUser(User user) {
+
         return userDao.insertNewUser(user);
     }
 
     public List<Meal> getAdminMealList() {
+
         return userDao.getMealListAdmin();
     }
 }

@@ -32,32 +32,23 @@ public class HomePageController {
     @Autowired
     MealPlanService mealPlanService;
 
-    static final Logger log = LogManager.getLogger(SimpleLogger.class);
-
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public String adminHome(HttpSession session) {
-        try {
-            User user = (User) session.getAttribute("user");
-            List<Dish> allDishList = mealPlanService.getDishList();
-            Map<String, Map<String, Meal>> weeklyMealMap = userDetailsService.getWeeklyMealMap(user);
-            session.setAttribute("allDishes", allDishList);
-            session.setAttribute("weeklyMeal", weeklyMealMap);
-            return "admin/home";
-        } catch (Exception e) {
-            log.error("AdminHomeController ::: doGet : ", e);
-            return null;
-        }
+        User user = (User) session.getAttribute("user");
+        List<Dish> allDishList = mealPlanService.getDishList();
+        Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
+        session.setAttribute("allDishes", allDishList);
+        session.setAttribute("weeklyMeal", weeklyMealMap);
+
+        return "admin/home";
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String userHome(HttpSession session) {
-        try {
-            Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
-            session.setAttribute("weeklyMeal", weeklyMealMap);
-            return "home";
-        } catch (Exception e) {
-            log.error("HomeController ::: doGet : ", e);
-            return null;
-        }
+
+        Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
+        session.setAttribute("weeklyMeal", weeklyMealMap);
+
+        return "home";
     }
 }

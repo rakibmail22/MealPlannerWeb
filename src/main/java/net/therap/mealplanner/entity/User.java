@@ -9,8 +9,9 @@ import java.util.List;
  * @since 10/17/16
  */
 @Entity
-@Table(name = "tblUser")
+@Table(name="user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;

@@ -11,7 +11,9 @@ import java.security.NoSuchAlgorithmException;
  */
 @Component
 public class Utils {
+
     public String hashMd5(String pass) {
+
         try {
             byte[] passBytes = pass.getBytes();
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -22,9 +24,10 @@ public class Utils {
             for (byte b : digested) {
                 stringBuilder.append(Integer.toHexString(0xff & b));
             }
+
             return stringBuilder.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+
             return null;
         }
     }

@@ -15,7 +15,6 @@ import java.io.IOException;
  * @since 10/24/16
  */
 public class AuthenticationFilter implements Filter {
-    final static Logger log = LogManager.getLogger(SimpleLogger.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,11 +23,14 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
+
         String loginUri = req.getContextPath() + "/login";
         String signUpUri = req.getContextPath() + "/signup";
+
         boolean loggedIn = (session != null && session.getAttribute("user") != null);
         boolean loginRequest = req.getRequestURI().equals(loginUri);
         boolean signUpRequest = req.getRequestURI().equals(signUpUri);
@@ -46,7 +48,8 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean excludeFilter(String path) {
-        if (path.startsWith("/jsp/style/") || path.startsWith("/jsp/script/")) {
+
+        if (path.startsWith("/statics/style/") || path.startsWith("/statics/script/")) {
             return true;
         } else {
             return false;

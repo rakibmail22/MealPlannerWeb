@@ -31,13 +31,8 @@ public class MealPlanService {
 
     public List<Dish> getDishList() {
         List<Dish> dishList = mealDao.getDishList();
+
         return dishList;
-    }
-
-
-    public List<Meal> getAllMealOfType(String type, String day) {
-        List<Meal> mealList = mealDao.getAllMealListOfTypeAndDay(type, day);
-        return mealList;
     }
 
     public Meal getBreakfastForUserForDay(User user, String day) {
@@ -46,6 +41,7 @@ public class MealPlanService {
                 return meal;
             }
         }
+
         return null;
     }
 
@@ -55,6 +51,7 @@ public class MealPlanService {
                 return meal;
             }
         }
+
         return null;
     }
 
@@ -64,40 +61,23 @@ public class MealPlanService {
         } else if (mealType.equals("L")) {
             return getLunchForUserForDay(user, day);
         }
+
         return null;
     }
 
     public int updateMealPlanForUser(Meal newMeal, Meal existingMeal, User user) {
         int result = 0;
         result = mealDao.updateMealForUser(existingMeal, newMeal, user);
-        return result;
-    }
 
-    public void insertNewMealPlanForUser(List<Dish> dishIdList, String day, String mealType, User user) {
-        Meal meal = new Meal();
-        meal.setDay(day);
-        meal.setType(mealType);
-        mealDao.insertMealForUser(meal, dishIdList, user);
+        return result;
     }
 
     public void insertNewDish(Dish dish) {
         mealDao.insertNewDish(dish);
     }
 
-    public int deleteMealForUser(Meal meal, User user) {
-        return mealDao.deleteMealForUser(meal, user);
-    }
-
     public List<Dish> getDishListByMeal(Meal meal) {
         return mealDao.getDishListByMeal(meal);
-    }
-
-    public List<Meal> getAllMeal() {
-        return mealDao.getAllMeal();
-    }
-
-    public void createNewMeal(List<Dish> dishList, String type) {
-        mealDao.createNewMeal(dishList, type);
     }
 
     public void deleteMeal(List<Meal> selectedMealList) {
@@ -109,6 +89,7 @@ public class MealPlanService {
         for (Dish dish : getDishListByMeal(meal)) {
             dishes += dish.getName() + ",";
         }
+
         return dishes.substring(0, dishes.length() - 1);
     }
 
@@ -123,6 +104,7 @@ public class MealPlanService {
             mealMap.put(userMeal.getType(), userMeal);
             dayMealMap.put(userMeal.getDay(), mealMap);
         }
+
         return dayMealMap;
     }
 }
