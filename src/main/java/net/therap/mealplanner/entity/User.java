@@ -9,7 +9,7 @@ import java.util.List;
  * @since 10/17/16
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -24,7 +24,12 @@ public class User {
 
     String role;
 
-    @ManyToMany(mappedBy = "userList")
+    @ManyToMany
+    @JoinTable(
+            name = "meal_user",
+            joinColumns = @JoinColumn(name = "userId", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "mealId", nullable = false)
+    )
     List<Meal> mealList;
 
     public User() {

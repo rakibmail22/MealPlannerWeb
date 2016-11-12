@@ -6,6 +6,7 @@ import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +25,13 @@ public class UserDetailsService {
     @Autowired
     Utils utils;
 
+    @Transactional
     public List<Meal> getMealListByUser(User user) {
 
-        return userDao.getMealListByUser(user);
+       return userDao.getMealListByUser(user);
     }
 
+    @Transactional
     public User validateUser(String email, String password) {
 
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
@@ -41,11 +44,13 @@ public class UserDetailsService {
         }
     }
 
+    @Transactional
     public User addNewUser(User user) {
 
         return userDao.insertNewUser(user);
     }
 
+    @Transactional
     public List<Meal> getAdminMealList() {
 
         return userDao.getMealListAdmin();

@@ -1,15 +1,19 @@
 package net.therap.mealplanner.dao;
 
-import net.therap.mealplanner.dbconfig.HibernateManager;
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 import java.util.List;
 
 /**
@@ -19,108 +23,57 @@ import java.util.List;
 @Repository
 public class UserDaoImpl {
 
-    @Autowired
-    HibernateManager hibernateManager;
+
+    @PersistenceContext
+    EntityManager entityManager;
+
 
     public User getUserById(int id) {
 
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            User user = session.load(User.class, id);
-            Hibernate.initialize(user);
-            session.getTransaction().commit();
-            session.close();
-
-            return user;
-        } catch (HibernateException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public List<Meal> getMealListByUser(User user) {
-
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            user = (User) session.merge(user);
-            Hibernate.initialize(user.getMealList().size());
-            session.evict(user);
-            session.close();
-
-            return user.getMealList();
-        } catch (HibernateException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
+        return entityManager.find(User.class, id);
     }
 
     public List<Meal> getMealListAdmin() {
 
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            User admin = (User) session.createCriteria(User.class).add(Restrictions.eq("role", "admin")).uniqueResult();
-            List<Meal> weeklyMealPlan = admin.getMealList();
-            for (Meal meal : weeklyMealPlan) {
-                Hibernate.initialize(meal.getMealDishes());
-            }
-            session.getTransaction().commit();
-            session.close();
-
-            return weeklyMealPlan;
-        } catch (HibernateException e) {
-            return null;
-        }
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Metamodel m = entityManager.getMetamodel();
+        EntityType<User> userEntityType = m.entity(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        cq.where(cb.equal(userRoot.get("role"), "admin"));
+        User admin = entityManager.createQuery(cq).getSingleResult();
+        return admin.getMealList();
     }
 
     public User getUserByEmail(String email) {
 
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", email)).uniqueResult();
-            Hibernate.initialize(user);
-            session.getTransaction().commit();
-            session.close();
-
-            return user;
-        } catch (HibernateException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Metamodel m = entityManager.getMetamodel();
+        EntityType<User> user = m.entity(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        cq.where(cb.equal(userRoot.get("email"), email));
+        return entityManager.createQuery(cq).getSingleResult();
     }
 
     public User insertNewUser(User user) {
 
-        Session session;
+        entityManager.persist(user);
+        return user;
 
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            int userId = (int) session.save(user);
-            user.setId(userId);
-            session.getTransaction().commit();
-            session.close();
+    }
 
-            return user;
-        } catch (HibernateException e) {
-            System.out.println(e);
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
+    public User updateMealForUser(User user, Meal meal) {
+
+        entityManager.refresh(user);
+        entityManager.persist(user);
+        return user;
+
+    }
+
+
+    public List<Meal> getMealListByUser(User user) {
+        User user1 = entityManager.find(User.class, user.getId());
+        return user1.getMealList();
     }
 }

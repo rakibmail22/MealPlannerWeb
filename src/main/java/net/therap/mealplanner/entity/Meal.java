@@ -1,5 +1,7 @@
 package net.therap.mealplanner.entity;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * @since 10/17/16
  */
 @Entity
-@Table(name="meal")
+@Table(name = "meal")
 public class Meal {
 
     @Id
@@ -30,12 +32,7 @@ public class Meal {
     )
     List<Dish> mealDishes;
 
-    @ManyToMany
-    @JoinTable(
-            name = "meal_user",
-            joinColumns = @JoinColumn(name = "mealId", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "userId", nullable = false)
-    )
+    @ManyToMany(mappedBy = "mealList")
     List<User> userList;
 
     public Meal() {

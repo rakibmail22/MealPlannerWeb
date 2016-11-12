@@ -14,6 +14,9 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,130 +27,31 @@ import java.util.List;
 @Repository
 public class MealDaoImpl {
 
-    @Autowired
-    HibernateManager hibernateManager;
+    @PersistenceContext
+    EntityManager entityManager;
 
     public List<Dish> getDishList() {
 
-        Session session;
+        CriteriaQuery<Dish> dishCriteriaQuery = entityManager.getCriteriaBuilder().createQuery(Dish.class);
+        dishCriteriaQuery.select(dishCriteriaQuery.from(Dish.class));
 
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            List<Dish> dishList = session.createCriteria(Dish.class).list();
-            session.close();
+        return entityManager.createQuery(dishCriteriaQuery).getResultList();
+    }
 
-            return dishList;
-        } catch (HibernateException e) {
-            return null;
+    public void insertNewDish(Dish dish) {
+
+        entityManager.persist(dish);
+    }
+
+    public void deleteMeal(List<Meal> selectedMealList) {
+
+        for (Meal meal : selectedMealList) {
+            entityManager.remove(meal);
         }
     }
 
-    public int updateMealForUser(Meal existingMeal, Meal newMeal, User user) {
+    public void saveMeal(Meal meal) {
 
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            user = (User) session.merge(user);
-            newMeal = (Meal) session.merge(newMeal);
-            List<Meal> userMealList = user.getMealList();
-            if (existingMeal != null) {
-                existingMeal = (Meal) session.merge(existingMeal);
-                userMealList.remove(existingMeal);
-                existingMeal.getUserList().remove(user);
-            }
-            userMealList.add(newMeal);
-            newMeal.getUserList().add(user);
-            session.getTransaction().commit();
-            session.flush();
-            session.close();
-
-            return 1;
-        } catch (ConstraintViolationException e) {
-            return -1;
-        } catch (HibernateException e) {
-            return -1;
-        }
-    }
-
-    public int insertMealForUser(Meal newMeal, List<Dish> dishList, User user) {
-
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            user = (User) session.merge(user);
-            session.save(newMeal);
-            for (Dish dish : dishList) {
-                dish = (Dish) session.merge(dish);
-                newMeal.getMealDishes().add(dish);
-            }
-            newMeal.getUserList().add(user);
-            session.getTransaction().commit();
-            session.close();
-
-            return 1;
-        } catch (HibernateException e) {
-            return -1;
-        }
-    }
-
-    public int insertNewDish(Dish dish) {
-
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(dish);
-            session.getTransaction().commit();
-            session.close();
-
-            return 1;
-        } catch (ConstraintViolationException e) {
-            return -1;
-        } catch (HibernateException e) {
-            return -1;
-        }
-    }
-
-    public int deleteMeal(List<Meal> selectedMealList) {
-
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            for (Meal meal : selectedMealList) {
-                session.beginTransaction();
-                meal = (Meal) session.merge(meal);
-                session.delete(meal);
-            }
-            session.getTransaction().commit();
-            session.close();
-
-            return 1;
-        } catch (HibernateException e) {
-            return -1;
-        }
-    }
-
-    public List<Dish> getDishListByMeal(Meal meal) {
-
-        Session session;
-
-        try {
-            session = hibernateManager.getSessionFactory().openSession();
-            meal = (Meal) session.merge(meal);
-            List<Dish> dishList = meal.getMealDishes();
-            Hibernate.initialize(dishList.size());
-            session.evict(meal);
-            session.close();
-
-            return dishList;
-        } catch (HibernateException e) {
-            return null;
-        }
+        entityManager.persist(meal);
     }
 }

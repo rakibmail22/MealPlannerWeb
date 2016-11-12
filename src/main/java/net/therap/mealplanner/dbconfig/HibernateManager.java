@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @author bashir
  * @since 10/18/16
  */
-@Component
 public class HibernateManager {
 
     private static SessionFactory sessionFactory = null;
