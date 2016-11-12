@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author bashir
@@ -20,10 +18,10 @@ import java.util.Map;
 public class UserDetailsService {
 
     @Autowired
-    UserDaoImpl userDao;
+    private UserDaoImpl userDao;
 
     @Autowired
-    Utils utils;
+    private Utils utils;
 
     @Transactional
     public List<Meal> getMealListByUser(User user) {

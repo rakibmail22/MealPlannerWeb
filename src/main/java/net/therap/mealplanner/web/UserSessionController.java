@@ -3,9 +3,6 @@ package net.therap.mealplanner.web;
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +20,10 @@ import javax.servlet.http.HttpSession;
 public class UserSessionController {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    SignUpService signUpService;
+    private SignUpService signUpService;
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session) {

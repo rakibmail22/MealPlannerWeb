@@ -5,9 +5,6 @@ import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.entity.Dish;
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +21,13 @@ import java.util.Map;
 public class MealPlanService {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    MealDaoImpl mealDao;
+    private MealDaoImpl mealDao;
 
     @Autowired
-    UserDaoImpl userDao;
+    private UserDaoImpl userDao;
 
     @Transactional
     public List<Dish> getDishList() {

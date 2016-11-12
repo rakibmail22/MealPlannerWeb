@@ -1,7 +1,5 @@
 package net.therap.mealplanner.entity;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +13,15 @@ import java.util.List;
 public class Meal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", allocationSize = 1)
+    private int id;
 
     @Column(columnDefinition = "enum('B','L')")
-    String type;
+    private String type;
 
     @Column(columnDefinition = "enum('FRI','SAT','SUN','MON','TUE','WED','THU')")
-    String day;
+    private String day;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -30,10 +29,10 @@ public class Meal {
             joinColumns = @JoinColumn(name = "mealId", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "dishId", nullable = false)
     )
-    List<Dish> mealDishes;
+    private List<Dish> mealDishes;
 
     @ManyToMany(mappedBy = "mealList")
-    List<User> userList;
+    private List<User> userList;
 
     public Meal() {
         mealDishes = new ArrayList<Dish>();

@@ -22,7 +22,7 @@ public class UserDaoImpl {
 
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
 
     public User getUserById(int id) {

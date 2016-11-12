@@ -15,12 +15,12 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @SequenceGenerator(name = "seq", allocationSize = 1)
-    int id;
+    private int id;
 
-    String name;
+    private String name;
 
     @ManyToMany(mappedBy = "mealDishes")
-    List<Meal> mealList;
+    private List<Meal> mealList;
 
     public Dish() {
         mealList = new ArrayList<Meal>();

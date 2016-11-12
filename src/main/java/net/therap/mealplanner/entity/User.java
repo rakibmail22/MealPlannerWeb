@@ -13,16 +13,17 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", allocationSize = 1)
+    private int id;
 
-    String name;
+    private String name;
 
-    String password;
+    private String password;
 
-    String email;
+    private String email;
 
-    String role;
+    private String role;
 
     @ManyToMany
     @JoinTable(

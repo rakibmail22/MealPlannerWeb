@@ -2,9 +2,6 @@ package net.therap.mealplanner.service;
 
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.utils.Utils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class SignUpService {
 
     @Autowired
-    Utils utils;
+    private Utils utils;
 
     public boolean isValidSignUpForm(String name, String email, String password, String password2) {
 
