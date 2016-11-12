@@ -74,13 +74,8 @@ public class MealPlanService {
 
     @Transactional
     public void updateMealPlanForUser(Meal newMeal, Meal existingMeal, User user) {
-        List<Meal> userMealList = userDetailsService.getMealListByUser(user);
-        if (existingMeal!=null) {
-            userMealList.remove(existingMeal);
-        }
-        mealDao.saveMeal(newMeal);
-        userMealList.add(newMeal);
-        userDao.insertNewUser(user);
+
+        userDao.updateMealForUser(user, newMeal, existingMeal);
     }
 
     @Transactional

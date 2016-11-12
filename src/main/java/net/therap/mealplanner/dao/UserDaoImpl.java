@@ -2,13 +2,10 @@ package net.therap.mealplanner.dao;
 
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
-import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -63,17 +60,26 @@ public class UserDaoImpl {
 
     }
 
-    public User updateMealForUser(User user, Meal meal) {
+    public User updateMealForUser(User user, Meal newMeal, Meal existingMeal) {
 
-        entityManager.refresh(user);
+        user = entityManager.merge(user);
+
+        if (existingMeal != null) {
+            user.getMealList().remove(existingMeal);
+        }
+
+        user.getMealList().add(newMeal);
+        newMeal.getUserList().add(user);
+
+        entityManager.persist(newMeal);
         entityManager.persist(user);
-        return user;
 
+        return user;
     }
 
 
     public List<Meal> getMealListByUser(User user) {
-        User user1 = entityManager.find(User.class, user.getId());
-        return user1.getMealList();
+        user = entityManager.merge(user);
+        return user.getMealList();
     }
 }
