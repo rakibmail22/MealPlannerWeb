@@ -26,9 +26,9 @@ public class MealController {
     private MealPlanService mealPlanService;
 
     @RequestMapping(value = "/meal/update", method = RequestMethod.POST)
-    public String createBreakFast(HttpServletRequest req, @RequestParam String action,
+    public String updateMeal(HttpServletRequest req, String action,
                                   @ModelAttribute("selectedDishList") DishIdInfo selectedDishIdInfo,
-                                  @RequestParam String daySelect) {
+                                  String daySelect) {
 
         User user = (User) req.getSession().getAttribute("user");
         mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), user, createNewMeal(daySelect, action));
@@ -37,13 +37,9 @@ public class MealController {
     }
 
     @RequestMapping(value = "/dish/add", method = RequestMethod.GET)
-    public String addDish(HttpServletRequest req) {
+    public String addDish(HttpServletRequest req, String dishName) {
 
-        String dishName = req.getParameter("dishName");
-        Dish dish = new Dish();
-        dish.setName(dishName);
-
-        mealPlanService.insertNewDish(dish);
+        mealPlanService.insertNewDish(createNewDish(dishName));
 
         return "redirect:/admin/home";
     }
@@ -63,6 +59,14 @@ public class MealController {
         meal.setDay(day);
         meal.setType(getMealTypeByAction(actionName));
         return meal;
+    }
+
+    private Dish createNewDish(String dishName){
+
+        Dish dish = new Dish();
+        dish.setName(dishName);
+
+        return dish;
     }
 
 }

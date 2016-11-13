@@ -42,10 +42,10 @@ public class HomePageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String userHome(HttpSession session) {
+    public String userHome(Model model) {
 
         Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
-        session.setAttribute("weeklyMeal", weeklyMealMap);
+        model.addAttribute("weeklyMeal", weeklyMealMap);
 
         return "home";
     }
