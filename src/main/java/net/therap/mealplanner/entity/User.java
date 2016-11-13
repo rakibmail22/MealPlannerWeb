@@ -25,7 +25,7 @@ public class User {
 
     private String role;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "meal_user",
             joinColumns = @JoinColumn(name = "userId", nullable = false),

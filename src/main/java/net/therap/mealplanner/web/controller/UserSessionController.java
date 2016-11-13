@@ -1,13 +1,15 @@
-package net.therap.mealplanner.web;
+package net.therap.mealplanner.web.controller;
 
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
+import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,21 +28,20 @@ public class UserSessionController {
     private SignUpService signUpService;
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    public String displayLogin(HttpSession session) {
+    public String displayLogin(HttpSession session, Model model) {
 
         User user = (User) session.getAttribute("user");
 
         if (userAlreadyLoggedIn(user)) {
             return redirectUserHome(user);
         }
+        model.addAttribute("signUpFormInfo", new SignUpFormInfo());
 
         return "login";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String loginSubmit(HttpSession session,
-                              @RequestParam(name = "lg_username", defaultValue = "") String username,
-                              @RequestParam(name = "lg_password", defaultValue = "") String password) {
+    public String loginSubmit(HttpSession session, String username, String password, Model model) {
 
         User user = (User) session.getAttribute("user");
 
@@ -52,8 +53,11 @@ public class UserSessionController {
 
         if (null != user) {
             session.setAttribute("user", user);
+
             return redirectUserHome(user);
         } else {
+            model.addAttribute("signUpFormInfo", new SignUpFormInfo());
+
             return "login";
         }
     }
@@ -65,14 +69,10 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signUpSubmit(HttpSession session,
-                               @RequestParam(name = "sg_name", defaultValue = "") String name,
-                               @RequestParam(name = "sg_email", defaultValue = "") String email,
-                               @RequestParam(name = "sg_password", defaultValue = "") String password,
-                               @RequestParam(name = "sg_password2", defaultValue = "") String password2) {
+    public String signUpSubmit(HttpSession session, @ModelAttribute("signUpFormInfo") SignUpFormInfo signUpFormInfo) {
 
-        if (signUpService.isValidSignUpForm(name, email, password, password2)) {
-            User user = signUpService.createNewUser(name, email, password);
+        if (signUpService.isValidSignUpForm(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword(), signUpFormInfo.getVerifyPassword())) {
+            User user = signUpService.createNewUser(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword());
             user = userDetailsService.addNewUser(user);
             session.setAttribute("user", user);
         }
@@ -95,6 +95,7 @@ public class UserSessionController {
     }
 
     public boolean userAlreadyLoggedIn(User user) {
+
         if (null != user) {
             return true;
         } else {
@@ -103,6 +104,7 @@ public class UserSessionController {
     }
 
     private String redirectUserHome(User user) {
+
         if (("admin").equals(user.getRole())) {
             return "redirect:/admin/home";
         } else {

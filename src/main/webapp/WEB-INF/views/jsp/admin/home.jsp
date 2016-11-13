@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <%--
   Created by IntelliJ IDEA.
@@ -18,7 +19,7 @@
 
 <div>
     <div class="leftFloat">
-        <form>
+        <form:form commandName="selectedDishList">
             <table border="1">
                 <thead>
                 <tr>
@@ -28,11 +29,13 @@
                 <c:forEach var="dish" items="${allDishes}" varStatus="loop">
                     <tr>
                         <td>
-                            <label><input type="checkbox" name="selectedDishes" value="${loop.index}">${dish.name}
-                            </label>
+                           <%-- <label><form: type="checkbox" name="selectedDishes" value="${dish.id}" path="selectedDishList.options[${loop.index}]"/>${dish.name}
+                            </label>--%>
+                            <form:checkbox path="dishIdList" value="${dish.id}" label="${dish.name}"/>
                         </td>
                     </tr>
                 </c:forEach>
+
             </table>
             <select name="daySelect">
                 <option value="SUN">SUNDAY</option>
@@ -43,11 +46,11 @@
                 <option value="FRI">FRIDAY</option>
                 <option value="SAT">SATURDAY</option>
             </select>
-            <input type="submit" value="Update Breakfast" onclick="form.action='createNewBreakfast';">
-            <input type="submit" value="Update Lunch" onclick="form.action='createNewLunch';">
-        </form>
+            <input type="submit" name="action" value="Update Breakfast" onclick="form.action='meal/update';">
+            <input type="submit" name="action" value="Update Lunch" onclick="form.action='meal/update';">
+        </form:form>
 
-        <form action="addNewDish" method="get">
+        <form action="dish/add" method="get">
             <h4>Add New Dish</h4>
             <input type="text" name="dishName">
             <button type="submit">Add New Dish</button>

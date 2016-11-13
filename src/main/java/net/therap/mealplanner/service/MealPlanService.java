@@ -5,10 +5,14 @@ import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.entity.Dish;
 import net.therap.mealplanner.entity.Meal;
 import net.therap.mealplanner.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +74,26 @@ public class MealPlanService {
     }
 
     @Transactional
-    public void updateMealPlanForUser(Meal newMeal, Meal existingMeal, User user) {
+    public void updateMealPlanForUser(List<Integer> dishIdList, User user, Meal newMeal) {
 
-        userDao.updateMealForUser(user, newMeal, existingMeal);
+        List<Dish> dishList = mealDao.getDishListById(dishIdList);
+        newMeal.getMealDishes().addAll(dishList);
+        user = userDao.getUserById(user.getId());
+
+        Meal existingMeal=null;
+        for (Meal meal: user.getMealList()) {
+            if (meal.getType().equals(newMeal.getType()) && meal.getDay().equals(newMeal.getDay())) {
+                existingMeal = meal;
+            }
+        }
+
+        if (null!=existingMeal) {
+            user.getMealList().remove(existingMeal);
+        }
+
+        newMeal.getUserList().add(user);
+        user.getMealList().add(newMeal);
+        userDao.insertNewUser(user);
     }
 
     @Transactional
@@ -115,4 +136,6 @@ public class MealPlanService {
 
         return dayMealMap;
     }
+
+
 }

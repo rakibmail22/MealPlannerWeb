@@ -19,6 +19,4 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-orm', version: '4.3.3.RELEASE'
     compile group: 'org.springframework', name: 'spring-tx', version: '4.3.3.RELEASE'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.1.0.Final'
-
-
 }
