@@ -24,19 +24,21 @@
     <div class="logo">Login</div>
     <!-- Main Form -->
     <div class="login-form-1">
-        <form id="login-form" class="text-left" action="login" method="post">
+        <form:form id="login-form" class="text-left" action="login" method="post" commandName="loginFormInfo">
             <div class="login-form-main-message"></div>
             <div class="main-login-form">
                 <div class="login-group">
                     <div class="form-group">
                         <label for="lg_username" class="sr-only">Username</label>
-                        <input type="text" class="form-control" id="lg_username" name="username"
-                               placeholder="email">
+                        <form:input type="text" class="form-control" id="lg_username" name="username"
+                               placeholder="email" path="username"/>
+                        <form:errors path="username" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="lg_password" class="sr-only">Password</label>
-                        <input type="password" class="form-control" id="lg_password" name="password"
-                               placeholder="password">
+                        <form:input type="password" class="form-control" id="lg_password" name="password"
+                               placeholder="password" path="password"/>
+                        <form:errors path="password" cssClass="error"/>
                     </div>
                     <!--        <div class="form-group login-group-checkbox">
                                 <input type="checkbox" id="lg_remember" name="lg_remember">
@@ -49,7 +51,7 @@
                  <p>forgot your password? <a href="#">click here</a></p>
                  <p>new user? <a href="#">create new account</a></p>
              </div> -->
-        </form>
+        </form:form>
     </div>
 </div>
 

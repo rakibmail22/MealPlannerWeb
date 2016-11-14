@@ -3,7 +3,9 @@ package net.therap.mealplanner.web.controller;
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
+import net.therap.mealplanner.validator.LoginFormValidator;
 import net.therap.mealplanner.validator.SignUpFormValidator;
+import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,11 +37,18 @@ public class UserSessionController {
     @Autowired
     SignUpFormValidator signUpFormValidator;
 
-    @InitBinder
-    private void initBinder(WebDataBinder binder) {
+    @Autowired
+    LoginFormValidator loginFormValidator;
+
+    @InitBinder("signUpFormInfo")
+    private void initSignUpBinder(WebDataBinder binder) {
         binder.setValidator(signUpFormValidator);
     }
 
+    @InitBinder("loginFormInfo")
+    private void initLoginBinder(WebDataBinder binder) {
+        binder.setValidator(loginFormValidator);
+    }
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session, Model model) {
 
@@ -49,20 +58,26 @@ public class UserSessionController {
             return redirectUserHome(user);
         }
         model.addAttribute("signUpFormInfo", new SignUpFormInfo());
+        model.addAttribute("loginFormInfo", new LoginFormInfo());
 
         return "login";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String loginSubmit(HttpSession session, String username, String password, Model model) {
+    public String loginSubmit(HttpSession session, Model model,
+                              @ModelAttribute("loginFormInfo")LoginFormInfo loginFormInfo,
+                              BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
         User user = (User) session.getAttribute("user");
 
         if (userAlreadyLoggedIn(user)) {
             return redirectUserHome(user);
         }
 
-        user = userDetailsService.validateUser(username, password);
+        user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
 
         if (null != user) {
             session.setAttribute("user", user);
@@ -70,6 +85,7 @@ public class UserSessionController {
             return redirectUserHome(user);
         } else {
             model.addAttribute("signUpFormInfo", new SignUpFormInfo());
+            model.addAttribute("loginFormInfo", new LoginFormInfo());
 
             return "login";
         }
