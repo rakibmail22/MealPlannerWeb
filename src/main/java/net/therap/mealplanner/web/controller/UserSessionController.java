@@ -1,10 +1,10 @@
 package net.therap.mealplanner.web.controller;
 
-import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
-import net.therap.mealplanner.validator.LoginFormValidator;
-import net.therap.mealplanner.validator.SignUpFormValidator;
+import net.therap.mealplanner.web.validator.LoginFormValidator;
+import net.therap.mealplanner.web.validator.SignUpFormValidator;
 import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +40,17 @@ public class UserSessionController {
     @Autowired
     LoginFormValidator loginFormValidator;
 
-    @InitBinder("signUpFormInfo")
-    private void initSignUpBinder(WebDataBinder binder) {
-        binder.setValidator(signUpFormValidator);
-    }
 
     @InitBinder("loginFormInfo")
     private void initLoginBinder(WebDataBinder binder) {
         binder.setValidator(loginFormValidator);
     }
+
+    @InitBinder("signUpFormInfo")
+    private void initSignUpBinder(WebDataBinder binder) {
+        binder.setValidator(signUpFormValidator);
+    }
+
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session, Model model) {
 
@@ -69,24 +71,16 @@ public class UserSessionController {
                               @Validated LoginFormInfo loginFormInfo,
                               BindingResult bindingResult) {
 
-        model.addAttribute("signUpFormInfo", new SignUpFormInfo());
-        model.addAttribute("loginFormInfo", new LoginFormInfo());
-
         if (bindingResult.hasErrors()) {
-
+            model.addAttribute(loginFormInfo);
+            model.addAttribute("signUpFormInfo", new SignUpFormInfo());
             return "login";
         }
-        User user = (User) session.getAttribute("user");
 
-        if (userAlreadyLoggedIn(user)) {
-            return redirectUserHome(user);
-        }
-
-        user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
+        User user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
 
         if (null != user) {
-            session.setAttribute("user", user);
-
+            persistSessionData(user, session);
             return redirectUserHome(user);
         } else {
             return "login";
@@ -94,9 +88,11 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String displaySignUp() {
+    public String displaySignUp(Model model) {
 
-        return "login";
+        model.addAttribute("loginFormInfo", new LoginFormInfo());
+        model.addAttribute("signUpFormInfo", new SignUpFormInfo());
+        return "forward:/login";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -108,11 +104,11 @@ public class UserSessionController {
         if (!bindingResult.hasErrors()) {
             User user = signUpService.createNewUser(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword());
             user = userDetailsService.addNewUser(user);
-            session.setAttribute("user", user);
-            return "forward:/login";
+            persistSessionData(user, session);
+            return redirectUserHome(user);
         }
 
-        model.addAttribute("signupFormInfo", new SignUpFormInfo());
+        model.addAttribute(signUpFormInfo);
         model.addAttribute("loginFormInfo", new LoginFormInfo());
         return "login";
     }
@@ -146,5 +142,9 @@ public class UserSessionController {
         } else {
             return "redirect:/home";
         }
+    }
+
+    private void persistSessionData(User user, HttpSession session) {
+        session.setAttribute("user", user);
     }
 }

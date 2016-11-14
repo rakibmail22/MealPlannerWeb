@@ -1,8 +1,8 @@
 package net.therap.mealplanner.web.controller;
 
-import net.therap.mealplanner.entity.Dish;
-import net.therap.mealplanner.entity.Meal;
-import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.domain.Dish;
+import net.therap.mealplanner.domain.Meal;
+import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -9,11 +9,6 @@ public class LoginFormInfo {
     String username;
     String password;
 
-    public LoginFormInfo(){
-        username ="";
-        password ="";
-    }
-
     public String getUsername() {
         return username;
     }

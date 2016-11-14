@@ -1,7 +1,7 @@
 package net.therap.mealplanner.web.controller;
 
-import net.therap.mealplanner.entity.Dish;
-import net.therap.mealplanner.entity.Meal;
+import net.therap.mealplanner.domain.Dish;
+import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.service.UserDetailsService;
 import net.therap.mealplanner.web.command.DishIdInfo;

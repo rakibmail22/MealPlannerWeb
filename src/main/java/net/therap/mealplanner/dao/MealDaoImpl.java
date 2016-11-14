@@ -1,13 +1,12 @@
 package net.therap.mealplanner.dao;
 
-import net.therap.mealplanner.entity.Dish;
-import net.therap.mealplanner.entity.Meal;
+import net.therap.mealplanner.domain.Dish;
+import net.therap.mealplanner.domain.Meal;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

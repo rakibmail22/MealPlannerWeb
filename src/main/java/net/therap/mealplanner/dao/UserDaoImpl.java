@@ -1,7 +1,7 @@
 package net.therap.mealplanner.dao;
 
-import net.therap.mealplanner.entity.Meal;
-import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.domain.Meal;
+import net.therap.mealplanner.domain.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

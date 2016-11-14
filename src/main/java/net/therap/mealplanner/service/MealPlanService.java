@@ -2,17 +2,13 @@ package net.therap.mealplanner.service;
 
 import net.therap.mealplanner.dao.MealDaoImpl;
 import net.therap.mealplanner.dao.UserDaoImpl;
-import net.therap.mealplanner.entity.Dish;
-import net.therap.mealplanner.entity.Meal;
-import net.therap.mealplanner.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.simple.SimpleLogger;
+import net.therap.mealplanner.domain.Dish;
+import net.therap.mealplanner.domain.Meal;
+import net.therap.mealplanner.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

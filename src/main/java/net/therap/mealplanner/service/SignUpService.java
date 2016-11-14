@@ -1,6 +1,6 @@
 package net.therap.mealplanner.service;
 
-import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package net.therap.mealplanner.validator;
+package net.therap.mealplanner.web.validator;
 
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.stereotype.Component;

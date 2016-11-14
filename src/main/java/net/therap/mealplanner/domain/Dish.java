@@ -1,4 +1,4 @@
-package net.therap.mealplanner.entity;
+package net.therap.mealplanner.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;

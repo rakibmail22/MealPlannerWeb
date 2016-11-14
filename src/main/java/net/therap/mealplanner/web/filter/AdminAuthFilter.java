@@ -1,6 +1,6 @@
-package net.therap.mealplanner.filter;
+package net.therap.mealplanner.web.filter;
 
-import net.therap.mealplanner.entity.User;
+import net.therap.mealplanner.domain.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
