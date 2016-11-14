@@ -18,6 +18,7 @@
     <context:component-scan base-package="net.therap.mealplanner.dao"/>
     <context:component-scan base-package="net.therap.mealplanner.service"/>
     <context:component-scan base-package="net.therap.mealplanner.utils"/>
+    <context:component-scan base-package="net.therap.mealplanner.validator"/>
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -50,7 +51,14 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean id="myBeansValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+            p:basename="/WEB-INF/messages"/>
+
     <mvc:resources mapping="/statics/**" location="/statics/"/>
+    <mvc:annotation-driven validator="myBeansValidator"/>
     <mvc:annotation-driven/>
 
 </beans>

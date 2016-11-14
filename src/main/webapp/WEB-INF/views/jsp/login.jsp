@@ -3,6 +3,13 @@
 <html>
 <head>
     <title>Login</title>
+    <style>
+        .error {
+            color: #ff0000;
+            font-style: italic;
+            font-weight: bold;
+        }
+    </style>
     <!-- All the files that are required -->
     <c:set var="basePath" value="${pageContext.request.contextPath}"/>
     <link rel="stylesheet" href="${basePath}/statics/style/font-awesome.min.css">
@@ -58,22 +65,27 @@
                         <label for="sg_name" class="sr-only">Name</label>
                         <form:input type="text" class="form-control" id="sg_name" name="sg_name"
                                placeholder="name" path="name"/>
+                        <form:errors path="name" cssClass="error"/>
                     </div>
 
                     <div class="form-group">
                         <label for="sg_email" class="sr-only">Email</label>
                         <form:input type="text" class="form-control" id="sg_email" name="sg_email"
                                placeholder="email" path="email"/>
+                        <form:errors path="email" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="sg_password" class="sr-only">Password</label>
                         <form:input type="password" class="form-control" id="sg_password" name="sg_password"
                                placeholder="password" path="password"/>
+                        <form:errors path="password" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="sg_password2" class="sr-only">Re-type</label>
+
                         <form:input type="password" class="form-control" id="sg_password2" name="sg_password2"
                                placeholder="password" path="verifyPassword"/>
+                        <form:errors path="verifyPassword" cssClass="error"/>
                     </div>
 
                     <!--        <div class="form-group login-group-checkbox">

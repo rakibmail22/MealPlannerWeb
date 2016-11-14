@@ -3,10 +3,15 @@ package net.therap.mealplanner.web.controller;
 import net.therap.mealplanner.entity.User;
 import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
+import net.therap.mealplanner.validator.SignUpFormValidator;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +31,14 @@ public class UserSessionController {
 
     @Autowired
     private SignUpService signUpService;
+
+    @Autowired
+    SignUpFormValidator signUpFormValidator;
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(signUpFormValidator);
+    }
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session, Model model) {
@@ -69,22 +82,25 @@ public class UserSessionController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signUpSubmit(HttpSession session, @ModelAttribute("signUpFormInfo") SignUpFormInfo signUpFormInfo) {
+    public String signUpSubmit(HttpSession session,
+                               @ModelAttribute("signUpFormInfo")
+                               @Validated SignUpFormInfo signUpFormInfo,
+                               BindingResult bindingResult) {
 
-        if (signUpService.isValidSignUpForm(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword(), signUpFormInfo.getVerifyPassword())) {
+        if (!bindingResult.hasErrors()) {
             User user = signUpService.createNewUser(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword());
             user = userDetailsService.addNewUser(user);
             session.setAttribute("user", user);
+            return "forward:/login";
         }
 
-        return "forward:/login";
+        return "login";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
 
         session.invalidate();
-
         return "redirect:/login";
     }
 
