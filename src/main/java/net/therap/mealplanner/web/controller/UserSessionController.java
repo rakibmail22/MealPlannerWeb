@@ -65,10 +65,15 @@ public class UserSessionController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String loginSubmit(HttpSession session, Model model,
-                              @ModelAttribute("loginFormInfo")LoginFormInfo loginFormInfo,
+                              @ModelAttribute("loginFormInfo")
+                              @Validated LoginFormInfo loginFormInfo,
                               BindingResult bindingResult) {
 
+        model.addAttribute("signUpFormInfo", new SignUpFormInfo());
+        model.addAttribute("loginFormInfo", new LoginFormInfo());
+
         if (bindingResult.hasErrors()) {
+
             return "login";
         }
         User user = (User) session.getAttribute("user");
@@ -84,9 +89,6 @@ public class UserSessionController {
 
             return redirectUserHome(user);
         } else {
-            model.addAttribute("signUpFormInfo", new SignUpFormInfo());
-            model.addAttribute("loginFormInfo", new LoginFormInfo());
-
             return "login";
         }
     }
@@ -101,7 +103,7 @@ public class UserSessionController {
     public String signUpSubmit(HttpSession session,
                                @ModelAttribute("signUpFormInfo")
                                @Validated SignUpFormInfo signUpFormInfo,
-                               BindingResult bindingResult) {
+                               BindingResult bindingResult, Model model) {
 
         if (!bindingResult.hasErrors()) {
             User user = signUpService.createNewUser(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword());
@@ -110,6 +112,8 @@ public class UserSessionController {
             return "forward:/login";
         }
 
+        model.addAttribute("signupFormInfo", new SignUpFormInfo());
+        model.addAttribute("loginFormInfo", new LoginFormInfo());
         return "login";
     }
 
