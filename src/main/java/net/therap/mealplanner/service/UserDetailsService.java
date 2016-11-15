@@ -1,5 +1,6 @@
 package net.therap.mealplanner.service;
 
+import net.therap.mealplanner.dao.UserDao;
 import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.domain.User;
@@ -18,7 +19,7 @@ import java.util.List;
 public class UserDetailsService {
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     @Autowired
     private Utils utils;

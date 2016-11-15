@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * @author bashir
@@ -44,15 +45,14 @@ public class UserSessionController {
     @Autowired
     LoginFormValidator loginFormValidator;
 
-
     @InitBinder("loginFormInfo")
     private void initLoginBinder(WebDataBinder binder) {
-        binder.setValidator(loginFormValidator);
+        binder.addValidators(loginFormValidator);
     }
 
     @InitBinder("signUpFormInfo")
     private void initSignUpBinder(WebDataBinder binder) {
-        binder.setValidator(signUpFormValidator);
+        binder.addValidators(signUpFormValidator);
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
@@ -73,11 +73,10 @@ public class UserSessionController {
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String loginSubmit(HttpSession session, Model model,
                               @ModelAttribute("loginFormInfo")
-                              @Validated LoginFormInfo loginFormInfo,
+                              @Valid LoginFormInfo loginFormInfo,
                               BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute(loginFormInfo);
             model.addAttribute("signUpFormInfo", new SignUpFormInfo());
             return "login";
         }
@@ -103,7 +102,7 @@ public class UserSessionController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signUpSubmit(HttpSession session,
                                @ModelAttribute("signUpFormInfo")
-                               @Validated SignUpFormInfo signUpFormInfo,
+                               @Valid SignUpFormInfo signUpFormInfo,
                                BindingResult bindingResult, Model model) {
 
         if (!bindingResult.hasErrors()) {

@@ -14,7 +14,7 @@ import java.util.List;
  * @since 10/17/16
  */
 @Repository
-public class MealDaoImpl {
+public class MealDaoImpl implements MealDao {
 
     @PersistenceContext
     private EntityManager entityManager;

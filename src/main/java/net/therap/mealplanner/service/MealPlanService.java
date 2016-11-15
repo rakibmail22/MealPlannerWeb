@@ -1,6 +1,8 @@
 package net.therap.mealplanner.service;
 
+import net.therap.mealplanner.dao.MealDao;
 import net.therap.mealplanner.dao.MealDaoImpl;
+import net.therap.mealplanner.dao.UserDao;
 import net.therap.mealplanner.dao.UserDaoImpl;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
@@ -24,10 +26,10 @@ public class MealPlanService {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private MealDaoImpl mealDao;
+    private MealDao mealDao;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     @Transactional
     public List<Dish> getDishList() {
