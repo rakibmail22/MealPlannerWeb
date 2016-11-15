@@ -43,7 +43,7 @@ public class SignUpFormInfo {
         this.verifyPassword = verifyPassword;
     }
 
-    public String toString(){
-        return "Name: "+name+" Email: "+email+ " Password: "+password+ " Verify Pass: "+verifyPassword;
+    public String toString() {
+        return "Name: " + name + " Email: " + email + " Password: " + password + " Verify Pass: " + verifyPassword;
     }
 }

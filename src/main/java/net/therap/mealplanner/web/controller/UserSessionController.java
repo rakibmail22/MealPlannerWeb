@@ -1,12 +1,13 @@
 package net.therap.mealplanner.web.controller;
 
 import net.therap.mealplanner.domain.User;
-import net.therap.mealplanner.service.SignUpService;
 import net.therap.mealplanner.service.UserDetailsService;
-import net.therap.mealplanner.web.validator.LoginFormValidator;
-import net.therap.mealplanner.web.validator.SignUpFormValidator;
 import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
+import net.therap.mealplanner.web.helper.LoginHelper;
+import net.therap.mealplanner.web.helper.SignUpHelper;
+import net.therap.mealplanner.web.validator.LoginFormValidator;
+import net.therap.mealplanner.web.validator.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,10 @@ public class UserSessionController {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private SignUpService signUpService;
+    private SignUpHelper signUpHelper;
+
+    @Autowired
+    private LoginHelper loginHelper;
 
     @Autowired
     SignUpFormValidator signUpFormValidator;
@@ -56,9 +60,10 @@ public class UserSessionController {
 
         User user = (User) session.getAttribute("user");
 
-        if (userAlreadyLoggedIn(user)) {
-            return redirectUserHome(user);
+        if (loginHelper.userAlreadyLoggedIn(user)) {
+            return loginHelper.redirectUserHome(user);
         }
+
         model.addAttribute("signUpFormInfo", new SignUpFormInfo());
         model.addAttribute("loginFormInfo", new LoginFormInfo());
 
@@ -80,8 +85,8 @@ public class UserSessionController {
         User user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
 
         if (null != user) {
-            persistSessionData(user, session);
-            return redirectUserHome(user);
+            loginHelper.persistSessionData(user, session);
+            return loginHelper.redirectUserHome(user);
         } else {
             return "login";
         }
@@ -102,10 +107,10 @@ public class UserSessionController {
                                BindingResult bindingResult, Model model) {
 
         if (!bindingResult.hasErrors()) {
-            User user = signUpService.createNewUser(signUpFormInfo.getName(), signUpFormInfo.getEmail(), signUpFormInfo.getPassword());
+            User user = signUpHelper.createNewUser(signUpFormInfo);
             user = userDetailsService.addNewUser(user);
-            persistSessionData(user, session);
-            return redirectUserHome(user);
+            loginHelper.persistSessionData(user, session);
+            return loginHelper.redirectUserHome(user);
         }
 
         model.addAttribute(signUpFormInfo);
@@ -126,25 +131,4 @@ public class UserSessionController {
         return "404";
     }
 
-    public boolean userAlreadyLoggedIn(User user) {
-
-        if (null != user) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private String redirectUserHome(User user) {
-
-        if (("admin").equals(user.getRole())) {
-            return "redirect:/admin/home";
-        } else {
-            return "redirect:/home";
-        }
-    }
-
-    private void persistSessionData(User user, HttpSession session) {
-        session.setAttribute("user", user);
-    }
 }

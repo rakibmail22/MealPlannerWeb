@@ -79,6 +79,7 @@ public class UserDaoImpl {
 
 
     public List<Meal> getMealListByUser(User user) {
+
         user = entityManager.merge(user);
         return user.getMealList();
     }

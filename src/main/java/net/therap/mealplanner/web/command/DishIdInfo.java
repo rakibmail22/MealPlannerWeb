@@ -1,6 +1,5 @@
 package net.therap.mealplanner.web.command;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,10 +9,11 @@ import java.util.List;
  * @since 11/13/16
  */
 public class DishIdInfo {
+
     List<Integer> dishIdList;
 
-    public DishIdInfo(){
-        dishIdList= new ArrayList<Integer>();
+    public DishIdInfo() {
+        dishIdList = new ArrayList<Integer>();
     }
 
     public DishIdInfo(List<Integer> idList) {
@@ -28,7 +28,7 @@ public class DishIdInfo {
         this.dishIdList = dishIdList;
     }
 
-    public String toString(){
+    public String toString() {
         return Arrays.deepToString(dishIdList.toArray());
     }
 }

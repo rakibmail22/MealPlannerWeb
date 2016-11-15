@@ -1,10 +1,9 @@
 package net.therap.mealplanner.web.controller;
 
-import net.therap.mealplanner.domain.Dish;
-import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.web.command.DishIdInfo;
+import net.therap.mealplanner.web.helper.MealDishHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,13 +23,16 @@ public class MealController {
     @Autowired
     private MealPlanService mealPlanService;
 
+    @Autowired
+    MealDishHelper mealDishHelper;
+
     @RequestMapping(value = "/meal/update", method = RequestMethod.POST)
     public String updateMeal(HttpServletRequest req, String action,
-                                  @ModelAttribute("selectedDishList") DishIdInfo selectedDishIdInfo,
-                                  String daySelect) {
+                             @ModelAttribute("selectedDishList") DishIdInfo selectedDishIdInfo,
+                             String daySelect) {
 
         User user = (User) req.getSession().getAttribute("user");
-        mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), user, createNewMeal(daySelect, action));
+        mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), user, mealDishHelper.createNewMeal(daySelect, action));
 
         return "redirect:/admin/home";
     }
@@ -38,34 +40,8 @@ public class MealController {
     @RequestMapping(value = "/dish/add", method = RequestMethod.GET)
     public String addDish(HttpServletRequest req, String dishName) {
 
-        mealPlanService.insertNewDish(createNewDish(dishName));
+        mealPlanService.insertNewDish(mealDishHelper.createNewDish(dishName));
 
         return "redirect:/admin/home";
     }
-
-    private String getMealTypeByAction(String actionName) {
-        if ("Update Breakfast".equals(actionName)) {
-            return "B";
-        } else if ("Update Lunch".equals(actionName)) {
-            return "L";
-        }
-
-        return null;
-    }
-
-    private Meal createNewMeal(String day, String actionName) {
-        Meal meal = new Meal();
-        meal.setDay(day);
-        meal.setType(getMealTypeByAction(actionName));
-        return meal;
-    }
-
-    private Dish createNewDish(String dishName){
-
-        Dish dish = new Dish();
-        dish.setName(dishName);
-
-        return dish;
-    }
-
 }

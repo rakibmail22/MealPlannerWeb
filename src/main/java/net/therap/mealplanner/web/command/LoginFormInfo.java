@@ -25,7 +25,7 @@ public class LoginFormInfo {
         this.password = password;
     }
 
-    public String toString(){
-        return "Username: "+username+" Password: "+password;
+    public String toString() {
+        return "Username: " + username + " Password: " + password;
     }
 }
