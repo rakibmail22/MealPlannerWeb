@@ -1,14 +1,28 @@
 package net.therap.mealplanner.web.command;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author bashir
  * @since 11/13/16
  */
 public class SignUpFormInfo {
 
+    @NotNull
+    @Size(min = 1, message = "{name.required}")
     private String name;
+
+    @NotNull
+    @Size(min = 1, message = "{email.required}")
     private String email;
+
+    @NotNull
+    @Size(min = 1, message = "{password.required}")
     private String password;
+
+    @NotNull
+    @Size(min = 1, message = "{verifyPassword.required}")
     private String verifyPassword;
 
     public String getName() {

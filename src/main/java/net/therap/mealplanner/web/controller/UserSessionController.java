@@ -6,13 +6,11 @@ import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import net.therap.mealplanner.web.helper.LoginHelper;
 import net.therap.mealplanner.web.helper.SignUpHelper;
-import net.therap.mealplanner.web.validator.LoginFormValidator;
 import net.therap.mealplanner.web.validator.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -41,14 +39,6 @@ public class UserSessionController {
 
     @Autowired
     SignUpFormValidator signUpFormValidator;
-
-    @Autowired
-    LoginFormValidator loginFormValidator;
-
-    @InitBinder("loginFormInfo")
-    private void initLoginBinder(WebDataBinder binder) {
-        binder.addValidators(loginFormValidator);
-    }
 
     @InitBinder("signUpFormInfo")
     private void initSignUpBinder(WebDataBinder binder) {

@@ -57,7 +57,7 @@
 
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-          p:basename="/WEB-INF/messages"/>
+          p:basename="/WEB-INF/classes/ValidationMessages"/>
 
     <mvc:resources mapping="/statics/**" location="/statics/"/>
     <mvc:annotation-driven validator="myBeansValidator"/>
