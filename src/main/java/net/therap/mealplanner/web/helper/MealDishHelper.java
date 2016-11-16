@@ -1,5 +1,6 @@
 package net.therap.mealplanner.web.helper;
 
+import net.therap.mealplanner.domain.Day;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class MealDishHelper {
 
     public String getMealTypeByAction(String actionName) {
+
         if ("Update Breakfast".equals(actionName)) {
             return "B";
         } else if ("Update Lunch".equals(actionName)) {
@@ -23,7 +25,7 @@ public class MealDishHelper {
 
     public Meal createNewMeal(String day, String actionName) {
         Meal meal = new Meal();
-        meal.setDay(day);
+        meal.setDay(Day.valueOf(day));
         meal.setType(getMealTypeByAction(actionName));
         return meal;
     }

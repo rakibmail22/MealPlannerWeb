@@ -20,8 +20,9 @@ public class Meal {
     @Column(columnDefinition = "enum('B','L')")
     private String type;
 
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('FRI','SAT','SUN','MON','TUE','WED','THU')")
-    private String day;
+    private Day day;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -55,11 +56,11 @@ public class Meal {
         this.type = type;
     }
 
-    public String getDay() {
+    public Day getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Day day) {
         this.day = day;
     }
 

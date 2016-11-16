@@ -122,14 +122,14 @@ public class MealPlanService {
     @Transactional
     public Map<String, Map<String, Meal>> getWeeklyMealMapForUser() {
         List<Meal> userMealList = userDetailsService.getAdminMealList();
-        Map<String, Map<String, Meal>> dayMealMap = new HashMap<String, Map<String, Meal>>();
+        Map<String, Map<String, Meal>> dayMealMap = new HashMap<>();
         for (Meal userMeal : userMealList) {
-            Map<String, Meal> mealMap = dayMealMap.get(userMeal.getDay());
+            Map<String, Meal> mealMap = dayMealMap.get(userMeal.getDay().name());
             if (mealMap == null) {
                 mealMap = new HashMap<>();
             }
             mealMap.put(userMeal.getType(), userMeal);
-            dayMealMap.put(userMeal.getDay(), mealMap);
+            dayMealMap.put(userMeal.getDay().name(), mealMap);
         }
 
         return dayMealMap;
