@@ -3,7 +3,6 @@ package net.therap.mealplanner.web.validator;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**
@@ -20,11 +19,11 @@ public class SignUpFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        SignUpFormInfo signUpFormInfo= (SignUpFormInfo) target;
+        SignUpFormInfo signUpFormInfo = (SignUpFormInfo) target;
 
         if (!signUpFormInfo.getPassword().equals(signUpFormInfo.getVerifyPassword())) {
-            errors.rejectValue("password","password.mismatch");
-            errors.rejectValue("verifyPassword","password.mismatch");
+            errors.rejectValue("password", "password.mismatch");
+            errors.rejectValue("verifyPassword", "password.mismatch");
         }
     }
 }

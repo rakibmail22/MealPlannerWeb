@@ -2,6 +2,7 @@ package net.therap.mealplanner.web.controller;
 
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.MealPlanService;
+import net.therap.mealplanner.service.MealPlanServiceImpl;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import net.therap.mealplanner.web.helper.MealDishHelper;
 import org.springframework.beans.factory.annotation.Autowired;

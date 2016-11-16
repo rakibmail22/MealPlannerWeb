@@ -54,6 +54,5 @@ public class MealDaoImpl implements MealDao {
         cq.select(dishRoot).where(predicate);
 
         return entityManager.createQuery(cq).getResultList();
-
     }
 }

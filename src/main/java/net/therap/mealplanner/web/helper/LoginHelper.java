@@ -33,5 +33,4 @@ public class LoginHelper {
     public void persistSessionData(User user, HttpSession session) {
         session.setAttribute("user", user);
     }
-
 }

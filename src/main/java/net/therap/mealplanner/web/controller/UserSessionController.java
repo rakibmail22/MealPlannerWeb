@@ -2,6 +2,7 @@ package net.therap.mealplanner.web.controller;
 
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.UserDetailsService;
+import net.therap.mealplanner.service.UserDetailsServiceImpl;
 import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import net.therap.mealplanner.web.helper.LoginHelper;

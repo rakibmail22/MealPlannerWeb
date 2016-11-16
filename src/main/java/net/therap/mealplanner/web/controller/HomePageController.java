@@ -3,7 +3,7 @@ package net.therap.mealplanner.web.controller;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.service.MealPlanService;
-import net.therap.mealplanner.service.UserDetailsService;
+import net.therap.mealplanner.service.MealPlanServiceImpl;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +20,6 @@ import java.util.Map;
  */
 @Controller
 public class HomePageController {
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private MealPlanService mealPlanService;

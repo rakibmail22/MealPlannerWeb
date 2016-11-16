@@ -20,7 +20,6 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -73,7 +72,6 @@ public class UserDaoImpl implements UserDao {
 
         return user;
     }
-
 
     public List<Meal> getMealListByUser(User user) {
 
