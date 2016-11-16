@@ -62,16 +62,13 @@ public class UserDaoImpl implements UserDao {
 
     public User updateMealForUser(User user, Meal newMeal, Meal existingMeal) {
 
-        user = entityManager.merge(user);
+        user = entityManager.find(User.class, user.getId());
 
         if (existingMeal != null) {
             user.getMealList().remove(existingMeal);
         }
 
         user.getMealList().add(newMeal);
-        newMeal.getUserList().add(user);
-
-        entityManager.persist(newMeal);
         entityManager.persist(user);
 
         return user;
@@ -80,7 +77,7 @@ public class UserDaoImpl implements UserDao {
 
     public List<Meal> getMealListByUser(User user) {
 
-        user = entityManager.merge(user);
+        user = entityManager.find(User.class, user.getId());
         return user.getMealList();
     }
 }
