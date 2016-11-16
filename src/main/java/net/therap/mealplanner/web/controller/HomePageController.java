@@ -29,7 +29,7 @@ public class HomePageController {
     private MealPlanService mealPlanService;
 
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
-    public String adminHome(HttpSession session, Model model) {
+    public String adminHome(Model model) {
 
         List<Dish> allDishList = mealPlanService.getDishList();
         Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();

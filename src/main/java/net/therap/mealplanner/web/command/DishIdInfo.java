@@ -1,5 +1,6 @@
 package net.therap.mealplanner.web.command;
 
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class DishIdInfo {
 
+    @Size(min = 1)
     List<Integer> dishIdList;
 
     public DishIdInfo() {
