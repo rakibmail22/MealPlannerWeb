@@ -5,6 +5,7 @@ import net.therap.mealplanner.dao.UserDao;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.domain.User;
+import net.therap.mealplanner.web.security.AuthUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.simple.SimpleLogger;
@@ -42,11 +43,11 @@ public class MealPlanServiceImpl implements MealPlanService {
     }
 
     @Transactional
-    public void updateMealPlanForUser(List<Integer> dishIdList, User user, Meal newMeal) {
+    public void updateMealPlanForUser(List<Integer> dishIdList, AuthUser authUser, Meal newMeal) {
 
         List<Dish> dishList = mealDao.getDishListById(dishIdList);
         newMeal.getMealDishes().addAll(dishList);
-        user = userDao.getUserById(user.getId());
+        User user = userDao.getUserById(authUser.getUserId());
 
         Meal existingMeal = null;
         for (Meal meal : user.getMealList()) {

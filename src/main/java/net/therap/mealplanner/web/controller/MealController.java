@@ -5,6 +5,7 @@ import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.service.MealPlanServiceImpl;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import net.therap.mealplanner.web.helper.MealDishHelper;
+import net.therap.mealplanner.web.security.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -36,8 +37,8 @@ public class MealController {
                              String daySelect) {
 
         if (!bindingResult.hasErrors()) {
-            User user = (User) req.getSession().getAttribute("user");
-            mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), user, mealDishHelper.createNewMeal(daySelect, action));
+            AuthUser authUser = (AuthUser) req.getSession().getAttribute("user");
+            mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), authUser, mealDishHelper.createNewMeal(daySelect, action));
         }
 
         return "redirect:/admin/home";

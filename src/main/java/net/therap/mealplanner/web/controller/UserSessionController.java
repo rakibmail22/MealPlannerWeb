@@ -7,6 +7,7 @@ import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import net.therap.mealplanner.web.helper.LoginHelper;
 import net.therap.mealplanner.web.helper.SignUpHelper;
+import net.therap.mealplanner.web.security.AuthUser;
 import net.therap.mealplanner.web.validator.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,10 +50,10 @@ public class UserSessionController {
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String displayLogin(HttpSession session, Model model) {
 
-        User user = (User) session.getAttribute("user");
+        AuthUser authUser= (AuthUser) session.getAttribute("user");
 
-        if (loginHelper.userAlreadyLoggedIn(user)) {
-            return loginHelper.redirectUserHome(user);
+        if (loginHelper.userAlreadyLoggedIn(authUser)) {
+            return loginHelper.redirectUserHome(authUser);
         }
 
         model.addAttribute("signUpFormInfo", new SignUpFormInfo());
@@ -75,8 +76,8 @@ public class UserSessionController {
         User user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
 
         if (null != user) {
-            loginHelper.persistSessionData(user, session);
-            return loginHelper.redirectUserHome(user);
+            AuthUser authUser = loginHelper.persistSessionData(user, session);
+            return loginHelper.redirectUserHome(authUser);
         } else {
             return "login";
         }
@@ -99,8 +100,8 @@ public class UserSessionController {
         if (!bindingResult.hasErrors()) {
             User user = signUpHelper.createNewUser(signUpFormInfo);
             user = userDetailsService.addNewUser(user);
-            loginHelper.persistSessionData(user, session);
-            return loginHelper.redirectUserHome(user);
+            AuthUser authUser = loginHelper.persistSessionData(user, session);
+            return loginHelper.redirectUserHome(authUser);
         }
 
         model.addAttribute(signUpFormInfo);

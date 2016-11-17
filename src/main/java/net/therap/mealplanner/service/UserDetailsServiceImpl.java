@@ -24,12 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private Utils utils;
 
     @Transactional
-    public List<Meal> getMealListByUser(User user) {
-
-        return userDao.getMealListByUser(user);
-    }
-
-    @Transactional
     public User validateUser(String email, String password) {
 
         User user = userDao.getUserByEmail(email);

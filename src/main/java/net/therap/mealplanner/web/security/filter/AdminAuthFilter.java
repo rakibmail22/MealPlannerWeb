@@ -1,7 +1,8 @@
-package net.therap.mealplanner.web.filter;
+package net.therap.mealplanner.web.security.filter;
 
 import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
+import net.therap.mealplanner.web.security.AuthUser;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +22,12 @@ public class AdminAuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        User user = (User) req.getSession().getAttribute("user");
-        if (Role.admin.equals(user.getRole())) {
+
+        AuthUser authUser= (AuthUser) req.getSession().getAttribute("user");
+        if (Role.admin.equals(authUser.getUserRole())) {
             chain.doFilter(req, resp);
         } else {
             resp.sendRedirect(req.getContextPath() + "/404");

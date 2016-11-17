@@ -31,12 +31,12 @@
 
     <filter>
         <filter-name>authenticate</filter-name>
-        <filter-class>net.therap.mealplanner.web.filter.AuthenticationFilter</filter-class>
+        <filter-class>net.therap.mealplanner.web.security.filter.AuthenticationFilter</filter-class>
     </filter>
 
     <filter>
         <filter-name>authAdmin</filter-name>
-        <filter-class>net.therap.mealplanner.web.filter.AdminAuthFilter</filter-class>
+        <filter-class>net.therap.mealplanner.web.security.filter.AdminAuthFilter</filter-class>
     </filter>
 
     <filter-mapping>

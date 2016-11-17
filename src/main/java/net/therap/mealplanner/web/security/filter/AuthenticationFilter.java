@@ -1,4 +1,4 @@
-package net.therap.mealplanner.web.filter;
+package net.therap.mealplanner.web.security.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

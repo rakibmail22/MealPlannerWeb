@@ -2,6 +2,7 @@ package net.therap.mealplanner.web.helper;
 
 import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
+import net.therap.mealplanner.web.security.AuthUser;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
@@ -13,25 +14,25 @@ import javax.servlet.http.HttpSession;
 @Component
 public class LoginHelper {
 
-    public boolean userAlreadyLoggedIn(User user) {
+    public boolean userAlreadyLoggedIn(AuthUser authUser) {
 
-        if (null != user) {
-            return true;
-        } else {
-            return false;
-        }
+        return null != authUser;
     }
 
-    public String redirectUserHome(User user) {
+    public String redirectUserHome(AuthUser authUser) {
 
-        if (Role.admin.equals(user.getRole())) {
+        if (Role.admin.equals(authUser.getUserRole())) {
             return "redirect:/admin/home";
         } else {
             return "redirect:/home";
         }
     }
 
-    public void persistSessionData(User user, HttpSession session) {
-        session.setAttribute("user", user);
+    public AuthUser persistSessionData(User user, HttpSession session) {
+
+        AuthUser authUser = new AuthUser(user.getId(), user.getRole());
+        session.setAttribute("user", authUser);
+
+        return authUser;
     }
 }

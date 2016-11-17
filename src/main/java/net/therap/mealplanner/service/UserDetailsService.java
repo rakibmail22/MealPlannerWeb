@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface UserDetailsService {
 
-    public List<Meal> getMealListByUser(User user);
-
     public User validateUser(String email, String password);
 
     public User addNewUser(User user);
