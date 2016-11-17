@@ -4,6 +4,7 @@ import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.service.MealPlanServiceImpl;
+import net.therap.mealplanner.utils.URL;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class HomePageController {
     @Autowired
     private MealPlanService mealPlanService;
 
-    @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
+    @RequestMapping(value = URL.ROOT+URL.ADMIN_HOME, method = RequestMethod.GET)
     public String adminHome(Model model) {
 
         List<Dish> allDishList = mealPlanService.getDishList();
@@ -34,15 +35,15 @@ public class HomePageController {
         model.addAttribute("weeklyMeal", weeklyMealMap);
         model.addAttribute("allDishes", allDishList);
 
-        return "admin/home";
+        return URL.ADMIN_HOME;
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = URL.ROOT+URL.USER_HOME, method = RequestMethod.GET)
     public String userHome(Model model) {
 
         Map<String, Map<String, Meal>> weeklyMealMap = mealPlanService.getWeeklyMealMapForUser();
         model.addAttribute("weeklyMeal", weeklyMealMap);
 
-        return "home";
+        return URL.USER_HOME;
     }
 }

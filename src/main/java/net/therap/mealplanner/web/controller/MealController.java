@@ -3,6 +3,7 @@ package net.therap.mealplanner.web.controller;
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.MealPlanService;
 import net.therap.mealplanner.service.MealPlanServiceImpl;
+import net.therap.mealplanner.utils.URL;
 import net.therap.mealplanner.web.command.DishIdInfo;
 import net.therap.mealplanner.web.helper.MealDishHelper;
 import net.therap.mealplanner.web.security.AuthUser;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
  * @since 11/7/16
  */
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping(value = URL.ROOT+URL.ADMIN+"/")
 public class MealController {
 
     @Autowired
@@ -30,7 +31,7 @@ public class MealController {
     @Autowired
     private MealDishHelper mealDishHelper;
 
-    @RequestMapping(value = "/meal/update", method = RequestMethod.POST)
+    @RequestMapping(value = URL.UPDATE_MEAL, method = RequestMethod.POST)
     public String updateMeal(HttpServletRequest req, String action,
                              @ModelAttribute("selectedDishList")
                              @Valid DishIdInfo selectedDishIdInfo, BindingResult bindingResult,
@@ -41,15 +42,15 @@ public class MealController {
             mealPlanService.updateMealPlanForUser(selectedDishIdInfo.getDishIdList(), authUser, mealDishHelper.createNewMeal(daySelect, action));
         }
 
-        return "redirect:/admin/home";
+        return "redirect:/"+URL.ADMIN_HOME;
     }
 
-    @RequestMapping(value = "/dish/add", method = RequestMethod.POST)
+    @RequestMapping(value = URL.ADD_DISH, method = RequestMethod.POST)
     public String addDish(String dishName) {
 
         if (!dishName.isEmpty()) {
             mealPlanService.insertNewDish(mealDishHelper.createNewDish(dishName));
         }
-        return "redirect:/admin/home";
+        return "redirect:/"+URL.ADMIN_HOME;
     }
 }

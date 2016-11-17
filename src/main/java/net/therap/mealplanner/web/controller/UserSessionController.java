@@ -3,6 +3,7 @@ package net.therap.mealplanner.web.controller;
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.service.UserDetailsService;
 import net.therap.mealplanner.service.UserDetailsServiceImpl;
+import net.therap.mealplanner.utils.URL;
 import net.therap.mealplanner.web.command.LoginFormInfo;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
 import net.therap.mealplanner.web.helper.LoginHelper;
@@ -27,7 +28,7 @@ import javax.validation.Valid;
  * @since 11/6/16
  */
 
-@Controller
+@Controller(value = URL.ROOT)
 public class UserSessionController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class UserSessionController {
         binder.addValidators(signUpFormValidator);
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    @RequestMapping(path = URL.LOGIN, method = RequestMethod.GET)
     public String displayLogin(HttpSession session, Model model) {
 
         AuthUser authUser= (AuthUser) session.getAttribute("user");
@@ -59,10 +60,10 @@ public class UserSessionController {
         model.addAttribute("signUpFormInfo", new SignUpFormInfo());
         model.addAttribute("loginFormInfo", new LoginFormInfo());
 
-        return "login";
+        return URL.LOGIN;
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @RequestMapping(path = URL.LOGIN, method = RequestMethod.POST)
     public String loginSubmit(HttpSession session, Model model,
                               @ModelAttribute("loginFormInfo")
                               @Valid LoginFormInfo loginFormInfo,
@@ -70,7 +71,7 @@ public class UserSessionController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("signUpFormInfo", new SignUpFormInfo());
-            return "login";
+            return URL.LOGIN;
         }
 
         User user = userDetailsService.validateUser(loginFormInfo.getUsername(), loginFormInfo.getPassword());
@@ -79,19 +80,19 @@ public class UserSessionController {
             AuthUser authUser = loginHelper.persistSessionData(user, session);
             return loginHelper.redirectUserHome(authUser);
         } else {
-            return "login";
+            return URL.LOGIN;
         }
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = URL.SIGNUP, method = RequestMethod.GET)
     public String displaySignUp(Model model) {
 
         model.addAttribute("loginFormInfo", new LoginFormInfo());
         model.addAttribute("signUpFormInfo", new SignUpFormInfo());
-        return "forward:/login";
+        return "forward:/"+URL.LOGIN;
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @RequestMapping(value = URL.SIGNUP, method = RequestMethod.POST)
     public String signUpSubmit(HttpSession session,
                                @ModelAttribute("signUpFormInfo")
                                @Valid SignUpFormInfo signUpFormInfo,
@@ -106,20 +107,20 @@ public class UserSessionController {
 
         model.addAttribute(signUpFormInfo);
         model.addAttribute("loginFormInfo", new LoginFormInfo());
-        return "login";
+        return URL.LOGIN;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = URL.LOGOUT, method = RequestMethod.GET)
     public String logout(HttpSession session) {
 
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/"+URL.LOGIN;
     }
 
-    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    @RequestMapping(value = URL.NOT_FOUND, method = RequestMethod.GET)
     public String pageNotFound() {
 
-        return "404";
+        return URL.NOT_FOUND;
     }
 
 }

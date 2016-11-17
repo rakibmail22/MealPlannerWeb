@@ -2,6 +2,7 @@ package net.therap.mealplanner.web.helper;
 
 import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
+import net.therap.mealplanner.utils.URL;
 import net.therap.mealplanner.web.security.AuthUser;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +23,9 @@ public class LoginHelper {
     public String redirectUserHome(AuthUser authUser) {
 
         if (Role.admin.equals(authUser.getUserRole())) {
-            return "redirect:/admin/home";
+            return "redirect:/"+ URL.ADMIN_HOME;
         } else {
-            return "redirect:/home";
+            return "redirect:/"+URL.USER_HOME;
         }
     }
 
