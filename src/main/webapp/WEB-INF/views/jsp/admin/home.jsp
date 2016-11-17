@@ -50,7 +50,7 @@
             <input type="submit" name="action" value="Update Lunch" onclick="form.action='meal/update';">
         </form:form>
 
-        <form action="dish/add" method="get">
+        <form action="dish/add" method="post">
             <h4>Add New Dish</h4>
             <input type="text" name="dishName">
             <button type="submit">Add New Dish</button>

@@ -43,7 +43,7 @@ public class MealController {
         return "redirect:/admin/home";
     }
 
-    @RequestMapping(value = "/dish/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/dish/add", method = RequestMethod.POST)
     public String addDish(String dishName) {
 
         if (!dishName.isEmpty()) {
