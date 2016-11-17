@@ -5,6 +5,9 @@ import net.therap.mealplanner.dao.UserDao;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
 import net.therap.mealplanner.domain.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,8 @@ import java.util.Map;
 @Service
 public class MealPlanServiceImpl implements MealPlanService {
 
+    final static Logger log = LogManager.getLogger(SimpleLogger.class);
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -34,39 +39,6 @@ public class MealPlanServiceImpl implements MealPlanService {
         List<Dish> dishList = mealDao.getDishList();
 
         return dishList;
-    }
-
-    @Transactional
-    public Meal getBreakfastForUserForDay(User user, String day) {
-        for (Meal meal : userDetailsService.getMealListByUser(user)) {
-            if (meal.getDay().equals(day) && meal.getType().equals("B")) {
-                return meal;
-            }
-        }
-
-        return null;
-    }
-
-    @Transactional
-    public Meal getLunchForUserForDay(User user, String day) {
-        for (Meal meal : userDetailsService.getMealListByUser(user)) {
-            if (meal.getDay().equals(day) && meal.getType().equals("L")) {
-                return meal;
-            }
-        }
-
-        return null;
-    }
-
-    @Transactional
-    public Meal getMealForUserForDay(User user, String day, String mealType) {
-        if (mealType.equals("B")) {
-            return getBreakfastForUserForDay(user, day);
-        } else if (mealType.equals("L")) {
-            return getLunchForUserForDay(user, day);
-        }
-
-        return null;
     }
 
     @Transactional
@@ -98,26 +70,6 @@ public class MealPlanServiceImpl implements MealPlanService {
     }
 
     @Transactional
-    public List<Dish> getDishListByMeal(Meal meal) {
-        return meal.getMealDishes();
-    }
-
-    @Transactional
-    public void deleteMeal(List<Meal> selectedMealList) {
-        mealDao.deleteMeal(selectedMealList);
-    }
-
-    @Transactional
-    public String getMealDishesAsString(Meal meal) {
-        String dishes = "";
-        for (Dish dish : meal.getMealDishes()) {
-            dishes += dish.getName() + ",";
-        }
-
-        return dishes.substring(0, dishes.length() - 1);
-    }
-
-    @Transactional
     public Map<String, Map<String, Meal>> getWeeklyMealMapForUser() {
         List<Meal> userMealList = userDetailsService.getAdminMealList();
         Map<String, Map<String, Meal>> dayMealMap = new HashMap<>();
@@ -126,7 +78,10 @@ public class MealPlanServiceImpl implements MealPlanService {
             if (mealMap == null) {
                 mealMap = new HashMap<>();
             }
-            mealMap.put(userMeal.getType(), userMeal);
+
+            log.debug("MEALTYPE:::: "+userMeal.getType().getMealType());
+
+            mealMap.put(userMeal.getType().getMealType(), userMeal);
             dayMealMap.put(userMeal.getDay().name(), mealMap);
         }
 

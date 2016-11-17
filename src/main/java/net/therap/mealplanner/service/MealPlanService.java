@@ -15,21 +15,9 @@ public interface MealPlanService {
 
     public List<Dish> getDishList();
 
-    public Meal getBreakfastForUserForDay(User user, String day);
-
-    public Meal getLunchForUserForDay(User user, String day);
-
-    public Meal getMealForUserForDay(User user, String day, String mealType);
-
     public void updateMealPlanForUser(List<Integer> dishIdList, User user, Meal newMeal);
 
     public void insertNewDish(Dish dish);
-
-    public List<Dish> getDishListByMeal(Meal meal);
-
-    public void deleteMeal(List<Meal> selectedMealList);
-
-    public String getMealDishesAsString(Meal meal);
 
     public Map<String, Map<String, Meal>> getWeeklyMealMapForUser();
 }

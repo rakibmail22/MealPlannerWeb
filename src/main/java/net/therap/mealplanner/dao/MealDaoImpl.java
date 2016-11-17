@@ -32,18 +32,6 @@ public class MealDaoImpl implements MealDao {
         entityManager.persist(dish);
     }
 
-    public void deleteMeal(List<Meal> selectedMealList) {
-
-        for (Meal meal : selectedMealList) {
-            entityManager.remove(meal);
-        }
-    }
-
-    public void saveMeal(Meal meal) {
-
-        entityManager.persist(meal);
-    }
-
     public List<Dish> getDishListById(List<Integer> idList) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();

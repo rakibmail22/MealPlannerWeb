@@ -15,9 +15,5 @@ public interface MealDao {
 
     public void insertNewDish(Dish dish);
 
-    public void deleteMeal(List<Meal> selectedMealList);
-
-    public void saveMeal(Meal meal);
-
     public List<Dish> getDishListById(List<Integer> idList);
 }

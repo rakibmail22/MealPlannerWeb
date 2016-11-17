@@ -17,8 +17,9 @@ public class Meal {
     @SequenceGenerator(name = "seq", allocationSize = 1)
     private int id;
 
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('B','L')")
-    private String type;
+    private MealType type;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('FRI','SAT','SUN','MON','TUE','WED','THU')")
@@ -48,11 +49,11 @@ public class Meal {
         this.id = id;
     }
 
-    public String getType() {
+    public MealType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(MealType type) {
         this.type = type;
     }
 

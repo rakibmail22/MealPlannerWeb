@@ -3,6 +3,7 @@ package net.therap.mealplanner.web.helper;
 import net.therap.mealplanner.domain.Day;
 import net.therap.mealplanner.domain.Dish;
 import net.therap.mealplanner.domain.Meal;
+import net.therap.mealplanner.domain.MealType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,12 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MealDishHelper {
 
-    public String getMealTypeByAction(String actionName) {
+    public MealType getMealTypeByAction(String actionName) {
 
         if ("Update Breakfast".equals(actionName)) {
-            return "B";
+            return MealType.B;
         } else if ("Update Lunch".equals(actionName)) {
-            return "L";
+            return MealType.L;
         }
 
         return null;
