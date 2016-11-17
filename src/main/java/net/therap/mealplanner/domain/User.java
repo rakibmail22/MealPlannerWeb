@@ -23,7 +23,9 @@ public class User {
 
     private String email;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('admin','user')")
+    private Role role;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -73,11 +75,11 @@ public class User {
         return email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

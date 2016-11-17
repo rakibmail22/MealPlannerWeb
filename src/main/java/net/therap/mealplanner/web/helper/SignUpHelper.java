@@ -1,5 +1,6 @@
 package net.therap.mealplanner.web.helper;
 
+import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
 import net.therap.mealplanner.utils.Utils;
 import net.therap.mealplanner.web.command.SignUpFormInfo;
@@ -20,7 +21,7 @@ public class SignUpHelper {
 
         User user = new User();
         user.setName(signUpFormInfo.getName());
-        user.setRole("user");
+        user.setRole(Role.user);
         user.setEmail(signUpFormInfo.getEmail());
         user.setPassword(utils.hashMd5(signUpFormInfo.getPassword()));
 

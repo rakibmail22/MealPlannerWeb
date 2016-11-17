@@ -1,6 +1,7 @@
 package net.therap.mealplanner.dao;
 
 import net.therap.mealplanner.domain.Meal;
+import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +37,7 @@ public class UserDaoImpl implements UserDao {
         Metamodel m = entityManager.getMetamodel();
         EntityType<User> userEntityType = m.entity(User.class);
         Root<User> userRoot = cq.from(User.class);
-        cq.where(cb.equal(userRoot.get("role"), "admin"));
+        cq.where(cb.equal(userRoot.get("role"), Role.admin));
         User admin = entityManager.createQuery(cq).getSingleResult();
         return admin.getMealList();
     }

@@ -1,5 +1,6 @@
 package net.therap.mealplanner.web.filter;
 
+import net.therap.mealplanner.domain.Role;
 import net.therap.mealplanner.domain.User;
 
 import javax.servlet.*;
@@ -23,7 +24,7 @@ public class AdminAuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         User user = (User) req.getSession().getAttribute("user");
-        if (user.getRole().equals("admin")) {
+        if (Role.admin.equals(user.getRole())) {
             chain.doFilter(req, resp);
         } else {
             resp.sendRedirect(req.getContextPath() + "/404");
